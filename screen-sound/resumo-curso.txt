@@ -1,0 +1,55 @@
+Escrevendo um "Hello World" no console
+
+Imaginando que estamos criando uma aplicação para desktop e queremos immprimir 
+algo no console, o c# usa o comando Console.WriteLine("Hello World!"); para escrever algo na 
+tela, o WriteLine escreve e pula uma linha como se fosse o "escreval" do VisualG.
+
+Lendo um valor informado pelo usuário
+
+Para um valor informado pelo usuário, usamos o comando Console.ReadLine(); caso o valor
+seja lido e não seja guardado em lugar nenhum, ele não faz sentido, então devemos atribuir
+a leitura desse valor a uma variável.
+
+Ex: string valoDigitado = Console.ReadLine();
+
+Convertendo um valor para inteiro
+
+Para converter um valor para inteiro podemos usar int.Parse(valorParaInteiro);
+Atribuindo isso a uma variável temos 
+
+Ex: int valorInteiro = int.Parse(valorParaInteiro);
+
+Criando funções com C#
+
+Primeiro declaramos oque essa função retorna, depois atribuiomos o nome da função
+
+Ex: void MinhaFuncao() {
+	// Lógica da função
+}
+
+void é a palavra reservada para dizer que não será retornado nada.
+
+Estruturas condicionais em C#
+
+if( 1 == 1) {
+	Console.WriteLine("1 São iguais")
+} else if (2 == 2){
+	Console.WriteLine("2 São iguais")
+} else {
+	Console.WriteLine("Nenhum critério atendido")
+}
+
+Também temos o Switch 
+
+Swtich (varivale) {
+	case 1: "Seu valor é 1"
+		break;
+	case 2: "Seu valor é 2"
+		break;
+	default: "Valor diferente do esperado!"
+		break;
+}
+
+As estruturas são bem parecidas com a sintaxe do javaScript, a única diferença é que em C#
+não existe ===, pois ela já em uma linguagem fortemente tipada, então não é necessário verificar
+tipos frequentemente como o caso do JS.
