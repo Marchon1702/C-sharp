@@ -74,9 +74,6 @@ Ex:
 
 Count é a forma de obter o cumprimento de uma lista, diferente do array que usamos length.
 
-
-
-
 Oque é uma Lista em C#
 
 Ela é igual a um array, porém ela não precisa receber um valor total de posições na sua atribuição.
@@ -103,4 +100,55 @@ int[] meuArray = {1, 2, 3}
 
 Esse é uma forma simplificada de escrever sem o new, e quantidades de espaços, pois os valores 
 inseridos já dão essa informação.
+
+Dicionários em C# 
+
+Dicionários são uma outra alternativa quando queremos criar uma estrutura que armazena
+chave e valor, eles são um conjuto de dados onde cada chave tem seu valor, bom ser
+usado em casos onde apenas a lista não é suficiente para guardar determinados dados.
+
+Uma lista é uma estrutura de dados que armazena valores em apenas uma variável, bem
+parecido com um array, porém elas são capazes apenas de suportar um valor por 
+espaço, logo quando queremos fazer uma estrtura onde precisamos de um nome, e uma nota,
+por exemplo... usamos o dictionary.
+
+Ex: 
+	Dictionary<string, int> meusLanches = new Dictionary<string, int> {
+		{"X-tudo", 8},
+		{"Pizza", 9}
+	} 
+
+Caso queiramos iniciar um dicionário com seu valor inicial vazio:
+	Dictionary<string, int> meuLanches = new Dictionary<string, int>();
+
+O método Add também serve para adicionarmos valores em um dicionário
+	meusLanches.Add("Açaí", 9);
+
+Podemos também mesclar as estruturas de dados, como por exemplo, adicionar o valor
+do meu dicionário sendo uma lista
+
+Ex: 
+	Dictionary<string, List<int>> bandasRegistradas = new Dictionary<string, List<int>>();
+
+Foi criado um dinionário onde sua chave é uma string e seu valor é uma lista que contem
+valores inteiros.
+
+Acessando valores de um dicionário
+
+Caso queiramos adicionar um valor em uma chave específica basta acessar a chave
+por [] e depois setar o valor desejado.
+
+
+Ex: 
+	bandasRegistradas["Banda Eva"].Add(8);
+
+O Add é usado nesse caso porque o valor desse Dicionário é uma lista.
+
+Para verificar se um dicionário contém a determinada chave basta
+
+Ex:
+	if(bandasRegistradas.ContainsKey("Banda Eva")) {
+		...Lógica desejada
+	}
+
 
