@@ -53,3 +53,54 @@ Swtich (varivale) {
 As estruturas são bem parecidas com a sintaxe do javaScript, a única diferença é que em C#
 não existe ===, pois ela já em uma linguagem fortemente tipada, então não é necessário verificar
 tipos frequentemente como o caso do JS.
+
+Mais comandos
+
+Para limparmos a tela do nosso programa feito no terminal, 
+podemos usar o comando: Console.Clear();
+
+Para criarmos um timer como algo parecido com o setTimeOut do JavaScript basta usar o comando:
+Thread.Sleep(1000); O argumento deve ser passado em milisegundos tbm.
+
+Laços de repetição com for e foreach
+
+Para fazer um laço de repetição com for é quase a mesma coisa de Js, a única diferença
+é que ao invés de declararmos let, declaramos o tipo da varivael
+
+Ex: 
+	for(int i = 0; i < lista.Count; i++) {
+		Console.WriteLine(lista[i]);
+	}
+
+Count é a forma de obter o cumprimento de uma lista, diferente do array que usamos length.
+
+
+
+
+Oque é uma Lista em C#
+
+Ela é igual a um array, porém ela não precisa receber um valor total de posições na sua atribuição.
+
+Então quando teremos um conjunto de dados que não sabemos quantos espaços irão ocupar na memoria,
+usamos Listas e quando sabemos quantos espaços esses dados irão ocupar, usamos arrays.
+
+A declaração de uma lista é feita assim: 
+
+List<TipoDeDados> listaDeAlgo = new List<TipoDeDados>();
+
+Caso queiramos iniciar uma lista com alguns valores, o () sai, e usamos {"valor1", "valor2"};
+
+Declarando um array com C#
+
+int[] meuArray = new int[Quantidade de Espaços]
+
+meuArray[0] = 1
+
+Caso você já tenha todos os valores que serão atribuidos e deseja incializar o array com eles
+você pode fazer
+
+int[] meuArray = {1, 2, 3}
+
+Esse é uma forma simplificada de escrever sem o new, e quantidades de espaços, pois os valores 
+inseridos já dão essa informação.
+
