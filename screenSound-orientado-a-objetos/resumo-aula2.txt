@@ -1,0 +1,35 @@
+Atributo e propriedades
+
+Em uma classe podemos ter dois tipos de "armazenadores de valor", atributo e propriedade, o atributo é uma váriavel usada para possuir valores relacionados a uma instância de uma classe, a propriedade é como um "Controle remoto", que além de armazernar dados, ela pode ser usada para controlar como esse valor é atribuido e como ele é lido.
+
+Adendo: Em C# atributos são escritos com camelCase e Propriedades são escritas com PascalCase.
+
+Ex: 
+	class Musica
+{
+    public string Nome { get; set; }
+    public string Artista { get; set; }
+    public int Duracao { get; set; }
+    public bool Disponivel { get; set; }
+    public string Descricao => $"A música {Nome} pertence a banda {Artista}.";
+}
+
+Na Classe Musica podemos ver que só temos propriedades, até a "Disponivel" elas tem um get e um set, get serve para capturar o valor que esse atributo possui e set serve para adicionar um novo valor. No caso de Descricao, ela não tem a funcionalidade set, ou seja, ela não foi criada para receber um novo valor, seu valor é definido na sua criação e retornado em seguida.
+
+A prop Descricao retorna uma string usando um recurso chamado em C# de lambda, como em JavaScript temos as arrow functions, no C# temos o lambda, elas bem parecidas em relação as suas funcionalidades.
+
+Escrevendo um get de uma propriedade sem lambda temos um código muito verboso
+
+Ex:
+    public string Descricao {
+        get { 
+            return $"A música {Nome} pertence a banda {Artista}.";
+        }
+    }
+
+Como essa atribução de valor tem uma lógica muito básica podemos usar lambda.
+
+Então em resumo, atributos são variaveis simples que recebem um valor de uma forma direta e propriedades podem receber ou retornar valores baseados em uma lógica implementada diretamente nela.
+
+
+
