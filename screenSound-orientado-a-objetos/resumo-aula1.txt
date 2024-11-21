@@ -1,0 +1,47 @@
+﻿Classes em C#
+
+Uma class é uma representação de algo que existe no mundo real, para criarmos um dado 
+do tipo de uma classe, devemos intânciar, um dado ou "variável" criada a partir de uma classe se chama instância.
+
+Supondo que eu tenha uma classe 
+
+Ex: 
+	class Musica
+{
+    public string nome;
+    public string artista;
+    public int duracao;
+    public bool disponivel;
+
+    public void ExibirInfosDaMusica()
+    {
+        Console.WriteLine($"Nome: {nome}");
+        Console.WriteLine($"Artista: {artista}");
+        Console.WriteLine($"Duração {duracao} seg");
+        if(disponivel)
+        {
+            Console.WriteLine("Ouça agora!");
+        } else
+        {
+            Console.WriteLine("Assine o plano Plus+");
+        }
+    }
+}
+
+Essa classe representa o espelho ou molde de algo do mundo real, nesse caso é de uma música.
+
+Para atribuir esse molde a um dado que será usado no mundo virtual eu devo instânciar a classe Musica a uma variavel.
+
+Ex:
+    Musica musicaInstancia = new Musica();
+
+Caso eu queria e seja possivel atribuir um valor a um atributo de uma classe eu devo acessar primeiro o nome da instacia e depois o nome do atributo
+
+Ex:
+    musicaInstancia.nome = "Garota de Ipanema"
+
+Quandoum atributo possui a palavra reservada public, significa que seu valor pode ser atribuido na parte de fora da classe, ou seja, podemos atribuir um valor através de uma instância como foi feito acima, caso seja private, o atributo só pode ser acessado e ou alterado por métodos de dentro da própria classe.
+
+Criando métodos em classes
+
+Como foi criado na classe Musica um método é escrito igual uma função, a unica diferença é que ele pode ser public ou private igual aos atributos.
