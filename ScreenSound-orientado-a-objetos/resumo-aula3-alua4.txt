@@ -1,0 +1,49 @@
+Relacionando classes
+
+Classes podem ser relacionadas entre sí, por exemplo, a classe Banda pode conter uma propriedade "musicas" que pode ser uma lista que contém itens da classe Musica.
+
+Constrututores em classes
+
+Pensando que uma classe é uma representação virtual de algo que existe no mundo real, geralmente quando esse algo no mundo real é criado, ele possui algumas caracteristicas iniciais, ou seja, não faz sentido uma Musica ser criada(instânciada), sem ter pelo menos um Nome e um Autor.
+
+Por isso construtores existem, eles servem para que ao instanciar uma classe, o desenvolvedor forneça informações iniciais, elas são adicionadas nos argumentos da instância.
+
+Ex: 
+
+	class Musica
+{
+    public Musica(Banda artista, string nome)
+    {
+        Artista = artista;
+        Nome = nome;
+    }
+
+    public string Nome { get; }
+    public Banda Artista { get; }
+    public int Duracao { get; set; }
+    public bool Disponivel { get; set; }
+    public string DescricaoResumida => 
+        $"A música {Nome} pertence à banda {Artista}";
+}
+
+No exemplo acima, uma música deve ser iniciada com um nome e um artista.
+
+Ex: 
+    Musica faroesteCaboclo = new Musica(LegiãoUrbana, "Faroeste Caboclo");
+
+Na criação de uma nova música(instância), foi adicionado o artista e o nome da musica respectivamente, os argumentos devem ser passados na ordem de seus parâmetros. Uma observação importante é que, quando criamos uma instância que tem uma propriedade que recebe seu valor por argumentos, na maioria dos casos não faz sentido que aquela propriedade receba um set, apenas um get.
+
+Adendo:
+    Para setarmos valores de propriedades opcionais podemos usar uma sintaxe diferente.
+
+    Ao invés de: faroesteCaboclo.Disponivel = true
+                 faroesteCaboclo.Duracao = 540
+
+    Podemos usar:  
+    
+    Musica faroesteCaboclo = new Musica(LegiãoUrbana, "Faroeste Caboclo") {
+        Disponivel = true,
+        Duracao = 540
+    };
+
+Isso evita com que tenhamos que escrever o nome da instância cada vez q formos adicionar um valor a ela.
