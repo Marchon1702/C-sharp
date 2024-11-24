@@ -1,10 +1,11 @@
 ﻿using ScreenSound.Models;
+
 Banda beatles = new("Baeatles");
 Banda gunsAndRoses = new("Guns and Roses");
 
-beatles.AdicionarNota(10);
-beatles.AdicionarNota(8);
-beatles.AdicionarNota(9);
+beatles.AdicionarNota(new Avaliacao(10));
+beatles.AdicionarNota(new Avaliacao(9));
+beatles.AdicionarNota(new Avaliacao(8));
 
 Dictionary<string, Banda> bandasRegistradas = new();
 bandasRegistradas.Add(beatles.Nome, beatles);
@@ -141,9 +142,9 @@ void AvaliarUmaBanda()
     {
         Banda banda = bandasRegistradas[nomeDaBanda];
         Console.Write($"Qual a nota que a banda {nomeDaBanda} merece: ");
-        int nota = int.Parse(Console.ReadLine()!);
+        Avaliacao nota = Avaliacao.Parse(Console.ReadLine()!);
         banda.AdicionarNota(nota);
-        Console.WriteLine($"\nA nota {nota} foi registrada com sucesso para a banda {nomeDaBanda}");
+        Console.WriteLine($"\nA nota {nota.Nota} foi registrada com sucesso para a banda {nomeDaBanda}");
         Thread.Sleep(2000);
         Console.Clear();
     }

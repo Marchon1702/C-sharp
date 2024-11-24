@@ -1,0 +1,21 @@
+﻿Novas palavras reservadas de uma classe
+
+Por recomendação dos .Net, quando criamos uma classe em C#, devemo atribuir a palavra reservada internal antes de class, isso torna nossa classe visivel somente ao nosso projeto, o contrário disso seria public, se repararmos bem, quando instanciamos um List ou um Dictionary, estamos pegando uma classe externa criada em outro projeto, essas são classes publicas, ela pode ser encontrada além do projeto em que foi criada, então para que nossa aplicação tenha suas classes acessadas apenas pelo projeto devemos inserir internal.
+
+Métodos static
+
+Quando temos um método dentro de uma classe que não possui alteração direta com nenhuma propriedade, porém esse método ajuda a classe de alguma forma, podemos fazer com que esse método seja static, ou seja, ele pode ser chamado sem que a classe precise ser intânciada.
+
+Tudo é classe 
+
+A linguagem C# assim como muitas outras é orientada a objetos, então até seu arquivo principal"Program.cs" é uma classe e ela possui um método chamado de main, que é onde executamos o nosso bloco de algoritmo principal.
+
+Ex:
+	internal class Program {
+		private static void Main(string[] args) {
+			// Bloco Principal
+		}
+	}
+
+O compilador gera essa classe por baixo dos panos, então não precisamos declarar essa classe e o método sempre, mas temos que ter isso em mente.
+

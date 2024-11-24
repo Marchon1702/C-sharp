@@ -40,3 +40,14 @@ Cada “segmento” do namespace utiliza PascalCase;
 Os segmentos são conectados pelo caractere . (ponto);
 
 Uma regra geral para a nomeação de namespaces com diferentes segmentos é começar com o nome da empresa, em seguida o produto ou tecnologia, depois o módulo ou função e eventualmente um quarto segmento para o submódulo. Exemplo: Microsoft.AspnetCore.Mvc.
+
+Usando dois escopos diferentes com o mesmo nome
+
+Para usar dois escopos difernetes que suas classes contém o mesmo nome podemos atribuir o namespace com um apelido e usar na declaração das classes.
+
+using VideoA = VideoFlix.PlataformaA.Video; //criei um apelido para o Video da plataforma A
+using VideoB = VideoFlix.PlataformaB.Video; //criei um apelido para o Video da plataforma B
+
+VideoA video1 = new();
+VideoB video2 = new();
+
