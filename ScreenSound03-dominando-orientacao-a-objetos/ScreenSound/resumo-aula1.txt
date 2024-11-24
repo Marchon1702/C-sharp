@@ -1,0 +1,42 @@
+﻿Encapsulando classes
+
+Temos uma das pastas do encapsulamento de classes chamada de Models ou Modelos, essa pasta serve para guardar a classe que representa a estrutura principal que será utilizado, por exemplo: Imagine que você quer criar um software que simule uma loja de carros.
+
+Sua estrutura ou produto certamente será um carro, então criando a classe Carro, você fez um molde dos futuros Carros que serão adicionandos ao software. Caso tenha um sistema de login, você também deve criar uma classe chamada Usuario, que será um molde para novos usuários reais, ou seja, ele também fica em models. Para gerenciar ações em cima desses models, tem a pasta controllers, que são responsaveis por cuidas desses models de forma geral, como apagar, editar, adicionar um novo. Então quando queremos criar métodos que serão responsáveis por cuidar dos models de forma geral, criamos uam classe de controller, ex: CarrosController.
+
+Para finalizar a arquitetura MVC, temos as views, que são responsáveis por cuidar de toda a parte visual do nosso site.
+
+Em C# temos os namespaces, eles quando atribuidos a um bloco de código, servem para encapsular todas as váriaveis e nomeEspecificp no escopo do nameSpace criado.
+
+Ex: 
+namespace ScreenSound.Models;
+class Musica
+{
+    public Musica(Banda artista, string nome)
+    {
+        Artista = artista;
+        Nome = nome;
+    }
+
+    public string Nome { get; }
+    public Banda Artista { get; }
+    public int Duracao { get; set; }
+    public bool Disponivel { get; set; }
+    public string DescricaoResumida => $"A música {Nome} pertence à banda {Artista}";
+    
+}
+
+Todas as classes que estiverem encapsuladas no namespace ScreenSound.Models, tem seu escopo reservado somente a ele, ou seja, se criamos uma outra classe ou variaveis com o mesmo nome em outro namespace, não haverá conflito, pois serão tratados como blocos de códigos de escopo diferente.
+
+Instanciando com name space
+
+Antes a forma de declarar um namespace era criando seu nome e o escopo era encapsulado por {}.
+Atualmente podemos apenas criar seu nome e adicionar um ; e todo código após ; fará para do escopo do namespace.
+
+Regras de criação de nomes para namespaces
+
+Cada “segmento” do namespace utiliza PascalCase;
+
+Os segmentos são conectados pelo caractere . (ponto);
+
+Uma regra geral para a nomeação de namespaces com diferentes segmentos é começar com o nome da empresa, em seguida o produto ou tecnologia, depois o módulo ou função e eventualmente um quarto segmento para o submódulo. Exemplo: Microsoft.AspnetCore.Mvc.
