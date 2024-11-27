@@ -1,0 +1,62 @@
+﻿Verificando se algum valor dentro de uma lista é igual ao valor inputado
+
+Suponha que você recebeu um valor do cliente e quer verificar se algum espaço da sua lista tem aquele valor armazenado
+
+List<string> Nomes = {"nome1", "nome2", "nome3"};
+
+nomeProcurado = Console.WriteLine()!;
+if(Nomes.any(nome => nome.Equals(nomeProcurado)))
+
+A declaração acima itera sobre a lista de Nomes e verifica se qualquer nome em Nomes e igual(Equals) ao nomeProcurado.
+
+Em JavaScript seria um "Nomes.Some(nome => nome === nomeProcurado)"
+
+No caso de C# usar Equals é mais otimizado, por mais que o operador == também servisse, com Equals ele verifica se o valor é nulo e retorna false, com == caso o valor seja nulo o código retorna um erro, então só podemos usar == quando tivermos certeza que o valor a ser comparado não é nulo.
+
+Protegendo a aplicação com IEnumerable<T>
+
+Imagine que temos uma classe que possui um atributo privado que é igual a uma lista de alguma coisa. Ele ser privado deve se ao fato dele não pode ser modificado por ninguem de fora da classe, para que possamos acessar seu valor fora da classe criamos uma prop tambem sendo uma lista que contém o mesmo tipo.
+
+Ex:
+	internal class Album : IAvaliavel
+{
+    private List<Musica> musicas = new();
+    private List<Avaliacao> notas = new();
+
+    public Album(string nome)
+    {
+        Nome = nome;
+    }
+
+    public "Errado: List<Nota>" Notas => notas;
+
+    public void AdicionarNota(double nota)
+    {
+        musicas.Add(nota);
+    }
+}
+
+Avaliando o código acima podemos notar que privamos o atributo notas porque ele não pode receber nenhum valor diretamente, apenas pelo método AdicionarNota, porém quando declaramos a prop Notas como uma lista que contém valores do tipo nota "List<Nota>", permitimos que um invasor atribuia ou apague nossos dados através dos métodos das listas, "Add", "Clear", então para evitar que uma variavel de Lista possa ser alterada pelos métodos de lista devemos declara-lá com IEnumerable.
+
+Porque não usamos readonly
+
+readonly não permite que determinada variavel seja reatribuida após sua declaração, a referencia de uma prop ou atributo permaneçerá a mesma, porém ele aceita modificações com métodos internos como Add, o IEnumerable permite alteração através de métodos internos da classe, ele só restringe mudanças em métodos nativos de um List, por exemplo.
+readonly não permite que determinada variavel receba uma nova reatribuição, após sua declaração a referencia de uma prop ou atributo permaneçerá o mesmo sempre, o IEnumerable permite alteração através de métodos internos da classe, ele só restringe mudanças em métodos nativos de um List, por exemplo.
+
+Interfaces em C#
+
+Uma interface é uma forma de você verificar se determinada Classe possui um ou mais métodos que são capazes de fazer algo.
+Ex:
+
+internal interface IAvaliavel
+{
+    public void AdicionarNota(Avaliacao nota);
+    public double Media { get; }
+}
+
+Essa interface verfica se determinada classe tem o métodos de adicionarNota e uma Propriedade chamada Media, que só retorna um valor e não pode receber nenhum novo de modo externo.
+
+Qualquer classe que possua essas caracteristicas são classes Avaliaveis.
+
+Para declarar uma interface a uma classe utilizamos : igual atribuição de herança.
+
