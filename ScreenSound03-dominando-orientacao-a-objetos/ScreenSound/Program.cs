@@ -1,5 +1,17 @@
 ﻿using ScreenSound.Menu;
 using ScreenSound.Models;
+//using OpenAI_API;
+
+//Integrando API da OpenAi com o projeto
+//var client = "Minha Api Key";
+
+//var chat = client.Chat.CreateConversation();
+
+//chat.AppendSystemMessage("Faça um resumo da banda Guns And Roses, com no maximo um parágrafo. escreva de forma informal.");
+
+//string resposta = await chat.GetResponseFromChatbotAsync();
+//Console.WriteLine(resposta);
+
 
 Banda beatles = new("The Beatles");
 Banda gunsAndRoses = new("Guns and Roses");
