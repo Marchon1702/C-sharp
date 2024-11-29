@@ -1,0 +1,98 @@
+﻿Regras de Negócio
+
+Cadastro de Produto
+
+Não é permitido cadastrar produtos sem estoque inicial. Feito
+
+Gestão de Estoque
+
+Toda vez que um item for adicionado ao carrinho, deve ser feita uma verificação para garantir disponibilidade no estoque.
+Caso um produto fique sem estoque, ele deve ser desativado automaticamente para venda.
+
+Carrinho
+
+O carrinho pode conter no máximo 20 itens por vez.
+
+Pedidos
+
+Um pedido só pode ser criado se o pagamento for aprovado.
+O status inicial do pedido deve ser "Aguardando pagamento".
+Após o pagamento, o status muda automaticamente para "Em processamento".
+
+Pagamento
+
+Métodos aceitos: cartão de crédito, débito, boleto e Pix.
+O pagamento deve ser processado em até 10 segundos.
+Em caso de falha no pagamento, o pedido é cancelado automaticamente após 3 tentativas.
+Devolução e Troca
+
+Clientes têm até 7 dias úteis para solicitar devolução ou troca.
+Produtos devolvidos devem estar sem sinais de uso.
+
+Frete
+
+Frete grátis para compras acima de R$ 300,00.
+O valor do frete deve ser calculado com base no CEP e peso total dos itens do pedido.
+
+Classes Principais e Suas Responsabilidades
+
+Produto
+
+Atributos: id, nome, descricao, preco, categoria, tamanho, estoque, imagens.
+
+Métodos:
+verificarDisponibilidade(): boolean
+Retorna se há estoque disponível para o tamanho informado.
+
+atualizarEstoque(tamanho: string, quantidade: number): void
+Atualiza o estoque ao vender ou adicionar produtos.
+
+Carrinho
+
+Atributos: itens, total.
+itens é uma lista de objetos do tipo ItemCarrinho.
+
+Métodos:
+adicionarItem(produto: Produto, tamanho: string, quantidade: number): void
+Adiciona um item ao carrinho, verificando disponibilidade no estoque.
+
+removerItem(produtoId: string): void
+Remove um item do carrinho com base no id do produto.
+
+calcularTotal(): number
+Atualiza o atributo total com a soma de todos os itens.
+
+Pedido
+
+Atributos: id, usuario, itens, status, data, total, enderecoEntrega.
+
+Métodos:
+alterarStatus(status: string): void
+Permite mudar o status do pedido (ex.: "Aguardando pagamento", "Enviado", "Concluído").
+
+gerarNotaFiscal(): NotaFiscal
+Gera uma nota fiscal com os detalhes do pedido.
+
+Usuario
+
+Atributos: id, nome, email, senha, endereco, historicoPedidos.
+
+Métodos:
+autenticar(email: string, senha: string): boolean
+Verifica as credenciais do usuário.
+
+cadastrar(): void
+Adiciona o usuário ao sistema.
+
+recuperarSenha(email: string): void
+Envia um e-mail para recuperação de senha.
+
+Pagamento
+
+Atributos: id, pedidoId, metodo, status.
+Métodos:
+processarPagamento(): boolean
+Realiza a validação e processa o pagamento.
+
+reembolsar(): boolean
+Realiza o reembolso caso aplicável.
