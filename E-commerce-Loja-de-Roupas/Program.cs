@@ -1,22 +1,19 @@
 ﻿using E_commerce_Loja_de_Roupas.Models;
+using E_commerce_Loja_de_Roupas.Views.Menus;
+
+
+IEnumerable<Produto> camisas = Categoria.FiltrarPorCategoria("Camisas");
+IEnumerable<Produto> casacos = Categoria.FiltrarPorCategoria("Casacos");
+IEnumerable<Produto> shorts = Categoria.FiltrarPorCategoria("Shorts");
+IEnumerable<Produto> calcas = Categoria.FiltrarPorCategoria("Calças");
+IEnumerable<Produto> bones = Categoria.FiltrarPorCategoria("Bonés");
 
 
 
-
-//List<Produto> todosOsProdutos = new List<Produto>();
-
-//Categoria camisas = new(todosOsProdutos);
-//camisas.FiltrarPorCategoria("Camisas");
-//Categoria casacos = new(todosOsProdutos);
-//casacos.FiltrarPorCategoria("Casacos");
-//Categoria shorts = new(todosOsProdutos);
-//shorts.FiltrarPorCategoria("Shorts");
-//Categoria calcas = new(todosOsProdutos);
-//calcas.FiltrarPorCategoria("Calças");
-//Categoria sapatos = new(todosOsProdutos);
-//sapatos.FiltrarPorCategoria("Sapatos");
-//Categoria bones = new(todosOsProdutos);
-//bones.FiltrarPorCategoria("Bonés");
+Menu menu = new Menu();
+menu.MostrarLogo();
+Menu menuLogin = new MenuLogin();
+menuLogin.Executar();
 
 
 //Console.WriteLine("Registre um produto");

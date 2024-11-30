@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Mocks\EstoqueGeral.cs" />
+    <None Include="Models\ProdutosGeral.cs" />
   </ItemGroup>
 
 </Project>

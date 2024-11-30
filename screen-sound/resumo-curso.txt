@@ -10,7 +10,7 @@ Para um valor informado pelo usuário, usamos o comando Console.ReadLine(); caso 
 seja lido e não seja guardado em lugar nenhum, ele não faz sentido, então devemos atribuir
 a leitura desse valor a uma variável.
 
-Ex: string valoDigitado = Console.ReadLine();
+Ex: string valorDigitado = Console.ReadLine();
 
 Convertendo um valor para inteiro
 

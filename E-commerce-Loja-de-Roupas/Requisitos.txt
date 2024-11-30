@@ -22,10 +22,9 @@ Após o pagamento, o status muda automaticamente para "Em processamento".
 Pagamento
 
 Métodos aceitos: cartão de crédito, débito, boleto e Pix.
-O pagamento deve ser processado em até 10 segundos.
 Em caso de falha no pagamento, o pedido é cancelado automaticamente após 3 tentativas.
-Devolução e Troca
 
+Devolução e Troca.
 Clientes têm até 7 dias úteis para solicitar devolução ou troca.
 Produtos devolvidos devem estar sem sinais de uso.
 

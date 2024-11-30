@@ -1,12 +1,12 @@
 ﻿namespace E_commerce_Loja_de_Roupas.Models;
 
-internal class Categoria(List<Produto> todosOsProdutos)
+internal class Categoria
 {
-    public Dictionary<string, List<Produto>> FiltrarPorCategoria(string categoria)
+    public static IEnumerable<Produto> FiltrarPorCategoria(string categoria)
     {
-        List<Produto> porCategoriaLista = todosOsProdutos.FindAll(prod => prod.Categoria.Equals(categoria));
-        Dictionary<string, List<Produto>> porCategoria = new();
-        porCategoria.Add(categoria, porCategoriaLista);
-        return porCategoria;
+        List<Produto> produtos = (List<Produto>)ProdutosGeral.RetornaTodoOsProdutos();
+        return produtos.FindAll(prod => prod.Categoria.Equals(categoria));
     }
 }
+
+
