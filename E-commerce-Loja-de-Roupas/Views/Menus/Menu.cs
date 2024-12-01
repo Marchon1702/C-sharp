@@ -14,11 +14,12 @@ internal class Menu
  \$$    $$\$$    $$\$$    $$\$$     \       \$$    $| $$\$$    $$ \$$  $| $$  | $$\$$     |       $$
   \$$$$$$  \$$$$$$  \$$$$$$$ \$$$$$$$        \$$$$$$ \$$ \$$$$$$   \$$$$ \$$   \$$ \$$$$$$$\$$$$$$$ 
 ");
-        Console.WriteLine("  Bem Vindo a Code Clothes!");
+        Console.WriteLine("Bem Vindo a Code Clothes!\n");
     }
 
     public virtual void Executar() 
     {
-        Console.Clear();
+       Console.Clear();
     }
 }
+

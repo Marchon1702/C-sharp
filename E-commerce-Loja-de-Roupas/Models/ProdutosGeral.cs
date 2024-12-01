@@ -2,11 +2,9 @@
 
 internal class ProdutosGeral()
 {
-    public static IEnumerable<Produto> RetornaTodoOsProdutos()
-    {
-        List<Produto> produtos = new List<Produto>
-        { 
-            // Camisas
+    private List<Produto> produtos = new List<Produto>
+    { 
+                // Camisas
                 new Produto("Camiseta Estampada", "Camiseta de algodão com estampa frontal", 29.90, "Camisas", "M", 50),
                 new Produto("Camiseta Básica", "Camiseta simples, ideal para o dia a dia", 19.90, "Camisas", "G", 30),
                 new Produto("Camiseta de Banda", "Camiseta com estampa de banda famosa", 39.90, "Camisas", "GG", 25),
@@ -77,9 +75,8 @@ internal class ProdutosGeral()
                 new Produto("Boné Com Estampa", "Boné com estampa criativa e colorida", 59.90, "Bonés", "Único", 90),
                 new Produto("Boné de Algodão", "Boné de algodão confortável, ideal para o verão", 34.90, "Bonés", "Único", 150),
                 new Produto("Boné Vintage", "Boné com estilo retrô e logo vintage", 44.90, "Bonés", "Único", 110)
-        };
+    };
+    public IEnumerable<Produto> RetornaTodoOsProdutos() => produtos;
 
-        return produtos;
-    }
+    public void AdicionarProduto(Produto novoProduto) => produtos.Add(novoProduto);
 }
-
