@@ -1,5 +1,7 @@
 ﻿Regras de Negócio
 
+Todos os retornos sem valor nas paginas voltam ao menu principal...
+
 Cadastro de Produto
 
 Não é permitido cadastrar produtos sem estoque inicial. Feito
@@ -95,3 +97,5 @@ Realiza a validação e processa o pagamento.
 
 reembolsar(): boolean
 Realiza o reembolso caso aplicável.
+
+

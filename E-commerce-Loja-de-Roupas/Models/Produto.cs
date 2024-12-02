@@ -40,8 +40,6 @@ internal class Produto
     // A lógica do set é ativada quando a propriedade Estoque recebe um valor de alguma forma, no caso dessa classe, Estoque recebe o valor do parâmtro estoque.
     // O get é ativado do lado de fora, quando a prop da instância é acessada.
 
-    public bool VerificarDisponibilidade() => Estoque > 0;
-
     public void AtualizarEstoque(int novaQuantidade)
     {
         Estoque = novaQuantidade > 0 ? novaQuantidade : 0;
