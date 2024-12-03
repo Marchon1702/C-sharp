@@ -19,6 +19,7 @@ internal class Produto
         Categoria = categoria;
         Tamanho = tamanho;
         Estoque = estoque; // Aqui ativa a lógica do setter
+        QtdAhComprar = 0;
     }
 
     public Guid Id { get; }
@@ -27,6 +28,7 @@ internal class Produto
     public double Preco { get; set; }
     public string Categoria { get; }
     public string Tamanho { get; }
+    public int QtdAhComprar { get; set; }
 
     public int Estoque
     {
@@ -42,6 +44,6 @@ internal class Produto
 
     public void AtualizarEstoque(int novaQuantidade)
     {
-        Estoque = novaQuantidade > 0 ? novaQuantidade : 0;
+        Estoque = novaQuantidade > 0 ? (novaQuantidade - QtdAhComprar) : 0;
     }
 }

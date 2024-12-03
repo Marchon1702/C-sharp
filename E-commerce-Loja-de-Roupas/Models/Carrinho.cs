@@ -9,47 +9,74 @@ internal class Carrinho
     }
 
     public Usuario DadosDoUsuario { get; }
-    private List<ProdutoPreAdquirido> _produtos;
+    private List<Produto> _produtos;
     private int _total = 0;
     public IEnumerable<Produto> Produtos => _produtos;
     public int QuantidadeTotal => _total;
 
-    public void AdicionarProduto(Produto novoProduto, int quantidade)
+    public void AdicionarProduto(Produto novoProduto, int quantidade) // Só será chamado na página ver Produtos.
     {
+        if (quantidade < 1) { Console.WriteLine("Quantidade inválida :("); return; }
         if (novoProduto.Estoque < quantidade)
         {
-            Console.WriteLine("Estoque insuficiente!");
+            Console.WriteLine("-----------------------------ATENÇÃO-----------------------------");
+            Console.WriteLine("\nEstoque insuficiente!\n");
             return;
         }
-        if (CalcularTotal()) _total += quantidade;
-        if (!CalcularTotal())
+        if (CalcularTotalItens()) _total += quantidade;
+        if (!CalcularTotalItens())
         {
             _total -= quantidade;
             return;
         }
-        else
-        {
-            _produtos.Add(novoProduto);
-            novoProduto.Estoque += quantidade;
-        }
+
+        novoProduto.QtdAhComprar = quantidade;
+        _produtos.Add(novoProduto);
     }
 
-    public void RemoverProduto(Produto produto) 
+    public void RemoverProduto(Produto produto, double totalPreco) 
     {
-        if(produto.Estoque > 0)
+        produto.Estoque += produto.QtdAhComprar; // Falta ajustar a lógica de totalPreco em todos os métodos.
+        totalPreco -= produto.Preco;
+        _produtos.Remove(produto);
+    }  // Será chamado na paginacarrinho
+
+
+    public void AdicionarQuantidade(Produto produto, double totalPreco) 
+    {
+        if (produto.Estoque < produto.QtdAhComprar) 
         {
-            produto.Estoque -= 1;
+            Console.Clear();
+            Console.WriteLine("-----------------------------ATENÇÃO-----------------------------");
+            Console.WriteLine($"Estoque Esgotado! :(");
+            Console.WriteLine("\nVocê já adicionou o máximo de unidades! :)\n");
             return;
         }
 
-        _produtos.Remove(produto);
-        Console.WriteLine(produto.Estoque);
+        Console.Clear ();
+        totalPreco += produto.Preco;
+        produto.QtdAhComprar++;
+        produto.Estoque--;
     } 
 
-    private bool CalcularTotal()
+    public void ReduzirQuantidade(Produto produto, double totalPreco)
+    {
+        if(produto.QtdAhComprar == 1)
+        {
+            Console.Clear();
+            RemoverProduto(produto, totalPreco);
+            return;
+        }
+        Console.Clear();
+        totalPreco -= produto.Preco;
+        produto.QtdAhComprar--;
+        produto.Estoque++;
+    }
+  
+    private bool CalcularTotalItens()
     {
         if (QuantidadeTotal < 20) return true;
-
+        Console.WriteLine("-----------------------------ATENÇÃO-----------------------------");
         Console.WriteLine("Carrinho cheio, Produto não adicionado :(");
         return false;
     }

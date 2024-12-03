@@ -24,12 +24,12 @@ internal class Pagina : NavegacaoGeral
 
     protected virtual void ExibirProduto(Produto produto, int posicaoNaTela)
     {
-        Console.WriteLine("--------------------------------------------------");
-        Console.WriteLine($"                                  Selecionar: [{posicaoNaTela}]\n");
+        Console.WriteLine($"                                               Selecionar: [{posicaoNaTela}]\n");
         Console.WriteLine(produto.Nome);
         Console.WriteLine($"Categoria: {produto.Categoria}");
         Console.WriteLine($"Descrição: {produto.Descricao}");
         Console.WriteLine($"Tamanho: {produto.Tamanho}");
+        Console.WriteLine($"Estoque: {produto.Estoque}");
         Console.WriteLine($"\nPreco: {produto.Preco}\n");
     }
 }
