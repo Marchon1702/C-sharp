@@ -37,7 +37,7 @@ internal class NavegacaoGeral
  \$$    $$\$$    $$\$$    $$\$$     \       \$$    $| $$\$$    $$ \$$  $| $$  | $$\$$     |       $$
   \$$$$$$  \$$$$$$  \$$$$$$$ \$$$$$$$        \$$$$$$ \$$ \$$$$$$   \$$$$ \$$   \$$ \$$$$$$$\$$$$$$$ 
 ");
-        Console.WriteLine("Bem Vindo a Code Clothes!\n");
+        Console.WriteLine($"Olá {UsuarioLogado.Nome}, Bem Vindo(a) a Code Clothes!\n");
         Console.WriteLine("1- Ver Produtos");
         Console.WriteLine("2- Meu Carrinho");
         Console.WriteLine("3- Meus Pedidos");

@@ -7,12 +7,12 @@ internal class Usuario
         Nome = nome;
         Senha = senha;
         Endereco = endereco;
-        HistoricoDeProdutos = historicoDeProdutos;
+        CarrinhoDoUsuario = new Carrinho(historicoDeProdutos);
     }
 
     public Guid Id { get; } = Guid.NewGuid();
     public string Nome { get; }
     public string Senha { get; }
     public string Endereco { get; }
-    public List<Produto> HistoricoDeProdutos { get; }
+    public Carrinho CarrinhoDoUsuario { get; } 
 }

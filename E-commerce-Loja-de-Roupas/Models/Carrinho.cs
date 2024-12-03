@@ -2,49 +2,59 @@
 
 internal class Carrinho
 {
-    public Carrinho(Usuario usuario)
+    public Carrinho(List<Produto> produtosDoUsuario)
     {
-        DadosDoUsuario = usuario;
-        _produtos = usuario.HistoricoDeProdutos;
+        _produtos = produtosDoUsuario;
     }
 
-    public Usuario DadosDoUsuario { get; }
     private List<Produto> _produtos;
-    private int _total = 0;
     public IEnumerable<Produto> Produtos => _produtos;
-    public int QuantidadeTotal => _total;
+    public int QuantidadeTotal => Produtos.Sum(prod => prod.QtdAhComprar);
+    public double PrecoTotal { get 
+        {
+            List<double> listaDePrecos = new List<double>();
 
-    public void AdicionarProduto(Produto novoProduto, int quantidade) // Só será chamado na página ver Produtos.
+            foreach(Produto produto in _produtos)
+            {
+                listaDePrecos.Add(produto.Preco * produto.QtdAhComprar);
+            } 
+
+            return Math.Round(listaDePrecos.Sum(), 2);
+        } 
+    }
+
+    public void AdicionarProduto(Produto novoProduto) 
     {
-        if (quantidade < 1) { Console.WriteLine("Quantidade inválida :("); return; }
-        if (novoProduto.Estoque < quantidade)
+        bool jaAdicionado = _produtos.Any(prod => prod.Id.Equals(novoProduto.Id));
+        if(jaAdicionado)
+        {
+            Produto produtoExistente = _produtos.Find(prod => prod.Id.Equals(novoProduto.Id));
+            produtoExistente!.QtdAhComprar++;
+            Console.WriteLine($"Qtd adicionada {novoProduto.Id} == {produtoExistente.Id}");
+            return;
+        }
+        
+        if (novoProduto.Estoque == 0)
         {
             Console.WriteLine("-----------------------------ATENÇÃO-----------------------------");
             Console.WriteLine("\nEstoque insuficiente!\n");
             return;
         }
-        if (CalcularTotalItens()) _total += quantidade;
-        if (!CalcularTotalItens())
-        {
-            _total -= quantidade;
-            return;
-        }
+        if (!CalcularTotalItens()) return;
 
-        novoProduto.QtdAhComprar = quantidade;
+        novoProduto.QtdAhComprar++ ;
         _produtos.Add(novoProduto);
     }
 
-    public void RemoverProduto(Produto produto, double totalPreco) 
+    public void RemoverProduto(Produto produto) 
     {
-        produto.Estoque += produto.QtdAhComprar; // Falta ajustar a lógica de totalPreco em todos os métodos.
-        totalPreco -= produto.Preco;
+        produto.Estoque += produto.QtdAhComprar;
         _produtos.Remove(produto);
-    }  // Será chamado na paginacarrinho
+    } 
 
-
-    public void AdicionarQuantidade(Produto produto, double totalPreco) 
+    public void AdicionarQuantidade(Produto produto) 
     {
-        if (produto.Estoque < produto.QtdAhComprar) 
+        if (produto.Estoque == 0) 
         {
             Console.Clear();
             Console.WriteLine("-----------------------------ATENÇÃO-----------------------------");
@@ -52,23 +62,22 @@ internal class Carrinho
             Console.WriteLine("\nVocê já adicionou o máximo de unidades! :)\n");
             return;
         }
+        if (!CalcularTotalItens()) return;
 
         Console.Clear ();
-        totalPreco += produto.Preco;
         produto.QtdAhComprar++;
         produto.Estoque--;
     } 
 
-    public void ReduzirQuantidade(Produto produto, double totalPreco)
+    public void ReduzirQuantidade(Produto produto)
     {
         if(produto.QtdAhComprar == 1)
         {
             Console.Clear();
-            RemoverProduto(produto, totalPreco);
+            RemoverProduto(produto);
             return;
         }
         Console.Clear();
-        totalPreco -= produto.Preco;
         produto.QtdAhComprar--;
         produto.Estoque++;
     }

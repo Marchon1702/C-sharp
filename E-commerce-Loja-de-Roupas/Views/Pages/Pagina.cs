@@ -30,6 +30,6 @@ internal class Pagina : NavegacaoGeral
         Console.WriteLine($"Descrição: {produto.Descricao}");
         Console.WriteLine($"Tamanho: {produto.Tamanho}");
         Console.WriteLine($"Estoque: {produto.Estoque}");
-        Console.WriteLine($"\nPreco: {produto.Preco}\n");
+        Console.WriteLine($"\nPreco: R$: {produto.Preco}\n");
     }
 }

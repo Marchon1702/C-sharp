@@ -12,7 +12,7 @@ internal class PaginaCarrinho : Pagina
         base.Executar();
         ExibirTituloDaOpcao($"Carrinho de: {DadosDoUsuario.Nome}");
 
-        Carrinho carrinhoDoUsuario = new(DadosDoUsuario);
+        Carrinho carrinhoDoUsuario = DadosDoUsuario.CarrinhoDoUsuario;
         int keyProdutosCarrinho = 1;
         Dictionary<int, Produto> produtosDoCarrinho = new Dictionary<int, Produto>();
 
@@ -22,13 +22,11 @@ internal class PaginaCarrinho : Pagina
             produtosDoCarrinho.Add(keyProdutosCarrinho++ , produto);
         }
 
-        int totalProdutos = DadosDoUsuario.HistoricoDeProdutos.Sum(prod => prod.QtdAhComprar);
-        Console.WriteLine($"\nTotal de Produtos: {totalProdutos}");
+        Console.WriteLine($"\nTotal de Produtos: {carrinhoDoUsuario.QuantidadeTotal}");
 
-        double totalPreco = DadosDoUsuario.HistoricoDeProdutos.Sum(prod => prod.Preco);
-        Console.WriteLine($"\nTotal da Compra: {Math.Round(totalPreco, 2)}\n");
+        Console.WriteLine($"\nTotal da Compra: {carrinhoDoUsuario.PrecoTotal}\n");
 
-        Console.WriteLine("[Numero do Card] Selecionar Produto     [-1] Voltar para Menu Principal ");
+        Console.WriteLine("[Numero do Card] Selecionar Produto   [-2] Finalizar Pedido   [-1] Voltar para Menu Principal ");
         int opcaoEscolhida = int.Parse(Console.ReadLine()!);
         if ( opcaoEscolhida == -1) VoltarAoMenuPrincipal();
       
@@ -43,17 +41,17 @@ internal class PaginaCarrinho : Pagina
             switch (acaoEscolhida)
             {
                 case 1:
-                    carrinhoDoUsuario.AdicionarQuantidade(produtoAhAlterar, totalPreco);
+                    carrinhoDoUsuario.AdicionarQuantidade(produtoAhAlterar);
                     ExibirProduto(produtoAhAlterar, opcaoEscolhida);
                     VoltarAoMenuPrincipal();
                     break;
                 case 2:
-                    carrinhoDoUsuario.ReduzirQuantidade(produtoAhAlterar, totalPreco);
+                    carrinhoDoUsuario.ReduzirQuantidade(produtoAhAlterar);
                     ExibirProduto(produtoAhAlterar, opcaoEscolhida);
                     VoltarAoMenuPrincipal();
                     break;
                 case 3:
-                    carrinhoDoUsuario.RemoverProduto(produtoAhAlterar, totalPreco);
+                    carrinhoDoUsuario.RemoverProduto(produtoAhAlterar);
                     ExibirProduto(produtoAhAlterar, opcaoEscolhida);
                     VoltarAoMenuPrincipal();
                     break;
@@ -68,7 +66,7 @@ internal class PaginaCarrinho : Pagina
     protected override void ExibirProduto(Produto produto, int posicaoNaTela)
     {
         base.ExibirProduto(produto, posicaoNaTela);
-        Produto produtoAtual = DadosDoUsuario.HistoricoDeProdutos.Find(prod => prod.Id.Equals(produto.Id));       
+        Produto produtoAtual = DadosDoUsuario.CarrinhoDoUsuario.Produtos.ToList().Find(prod => prod.Id.Equals(produto.Id));       
         Console.WriteLine($"Qtd Unidade: {produtoAtual?.QtdAhComprar ?? 0}\n\n");
         Console.WriteLine("[1] Adicionar Unidade  [2] Remover Unidade  [3] Remover Produto");
         Console.WriteLine("-------------------------------------------------------------------");

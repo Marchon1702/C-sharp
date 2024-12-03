@@ -2,7 +2,7 @@
 
 internal class ProdutosGeral()
 {
-    private List<Produto> produtos = new List<Produto>
+    public static IEnumerable<Produto> produtos = new List<Produto>
     { 
                 // Camisas
                 new Produto("Camiseta Estampada", "Camiseta de algodão com estampa frontal", 29.90, "Camisas", "M", 50),
@@ -76,7 +76,6 @@ internal class ProdutosGeral()
                 new Produto("Boné de Algodão", "Boné de algodão confortável, ideal para o verão", 34.90, "Bonés", "Único", 150),
                 new Produto("Boné Vintage", "Boné com estilo retrô e logo vintage", 44.90, "Bonés", "Único", 110)
     };
-    public IEnumerable<Produto> RetornaTodoOsProdutos() => produtos;
 
-    public void AdicionarProduto(Produto novoProduto) => produtos.Add(novoProduto);
+
 }

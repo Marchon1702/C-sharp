@@ -2,11 +2,9 @@
 
 internal class Categoria
 {
-    public static IEnumerable<Produto> FiltrarPorCategoria(string categoria)
+    public static IEnumerable<Produto> FiltrarPorCategoria(string categoria, IEnumerable<Produto> todosOsProdutos)
     {
-        ProdutosGeral produtosGeral = new();
-        List<Produto> produtos = produtosGeral.RetornaTodoOsProdutos().ToList();
-        return produtos.FindAll(prod => prod.Categoria.Equals(categoria));
+        return todosOsProdutos.ToList().FindAll(prod => prod.Categoria.Equals(categoria));
     }
 }
 

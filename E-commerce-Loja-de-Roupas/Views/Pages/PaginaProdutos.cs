@@ -10,16 +10,16 @@ internal class PaginaProdutos : Pagina
     public override void Executar()
     {
         base.Executar();
-        ProdutosGeral produtosGeral = new ProdutosGeral();
-        IEnumerable<Produto> todosOsProdutos = produtosGeral.RetornaTodoOsProdutos();
+        IEnumerable<Produto> produtosGeral = ProdutosGeral.produtos;
         Dictionary<int, IEnumerable<Produto>> produtosAhFiltrar = new Dictionary<int, IEnumerable<Produto>>
         {
-            { 1, Categoria.FiltrarPorCategoria("Camisas")},
-            { 3, Categoria.FiltrarPorCategoria("Casacos")},
-            { 4, Categoria.FiltrarPorCategoria("Shorts")},
-            { 5, Categoria.FiltrarPorCategoria("Calças")},
-            { 6, Categoria.FiltrarPorCategoria("Bonés")},
-            { 7, todosOsProdutos}
+            { 1, Categoria.FiltrarPorCategoria("Camisas", produtosGeral)},
+            { 2, Categoria.FiltrarPorCategoria("Casacos", produtosGeral)},
+            { 3, Categoria.FiltrarPorCategoria("Shorts", produtosGeral)},
+            { 4, Categoria.FiltrarPorCategoria("Calças", produtosGeral)},
+            { 5, Categoria.FiltrarPorCategoria("Sapatos", produtosGeral)},
+            { 6, Categoria.FiltrarPorCategoria("Bonés", produtosGeral)},
+            { 7, produtosGeral}
         }; 
 
         ExibirTituloDaOpcao("Catálogo Code Clothes \n");
@@ -38,13 +38,14 @@ internal class PaginaProdutos : Pagina
     protected override void ExibirProduto(Produto produto, int posicaoNaTela)
     {
         base.ExibirProduto(produto, posicaoNaTela);
-        Console.WriteLine("[1] Adicionar ao Carrinho ");
         Console.WriteLine("-------------------------------------------------------------------");
     }
 
     public void ExibirProdutosGeral(IEnumerable<Produto> produtosAhExibir)
     {
         Console.Clear();
+
+        Carrinho carrinhoDoUsuario = DadosDoUsuario.CarrinhoDoUsuario;
         ExibirTituloDaOpcao("Catálogo Code Clothes\n");
 
         int keyProdutosCatalogo = 1;
@@ -78,7 +79,8 @@ internal class PaginaProdutos : Pagina
             switch (acaoEscolhida)
             {
                 case 1:
-                    VoltarAoMenuPrincipal(); // Fazer Logica de adicionar ao Carrinho
+                    carrinhoDoUsuario.AdicionarProduto(produtoAhAlterar);
+                    VoltarAoMenuPrincipal();
                     break;
                 default:
                     Console.WriteLine("Opção inválida!");
