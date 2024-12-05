@@ -8,6 +8,7 @@ internal class Usuario
         Senha = senha;
         Endereco = endereco;
         CarrinhoDoUsuario = new Carrinho(historicoDeProdutos);
+        PedidosFinalizados = new PedidosFinalizados(CarrinhoDoUsuario);
     }
 
     public Guid Id { get; } = Guid.NewGuid();
@@ -15,4 +16,5 @@ internal class Usuario
     public string Senha { get; }
     public string Endereco { get; }
     public Carrinho CarrinhoDoUsuario { get; } 
+    public PedidosFinalizados PedidosFinalizados { get; }
 }

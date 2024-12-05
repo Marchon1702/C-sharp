@@ -5,7 +5,7 @@ namespace E_commerce_Loja_de_Roupas.Views.Pages;
 internal class PaginaProdutos : Pagina
 {
     public PaginaProdutos(Usuario usuarioLogado) : base(usuarioLogado){}
-    public Usuario DadosDoUsuario { get { return UsuarioLogado; } }
+    protected Usuario DadosDoUsuario { get { return UsuarioLogado; } }
 
     public override void Executar()
     {

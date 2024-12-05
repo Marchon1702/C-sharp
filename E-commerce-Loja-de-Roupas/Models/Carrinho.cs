@@ -10,7 +10,7 @@ internal class Carrinho
     private List<Produto> _produtos;
     public IEnumerable<Produto> Produtos => _produtos;
     public int QuantidadeTotal => Produtos.Sum(prod => prod.QtdAhComprar);
-    public double PrecoTotal { get 
+    public double PrecoSubtotal { get 
         {
             List<double> listaDePrecos = new List<double>();
 
@@ -22,6 +22,7 @@ internal class Carrinho
             return Math.Round(listaDePrecos.Sum(), 2);
         } 
     }
+    public double TotalComFrete { get; private set; } 
 
     public void AdicionarProduto(Produto novoProduto) 
     {
@@ -49,6 +50,7 @@ internal class Carrinho
     public void RemoverProduto(Produto produto) 
     {
         produto.Estoque += produto.QtdAhComprar;
+        produto.QtdAhComprar = 0;
         _produtos.Remove(produto);
     } 
 
@@ -81,6 +83,10 @@ internal class Carrinho
         produto.QtdAhComprar--;
         produto.Estoque++;
     }
+
+    public void CapturaTotalComFrete(double totalAhPagar) => TotalComFrete = totalAhPagar;
+
+    public void ResetarCarrinho() => _produtos.Clear();
   
     private bool CalcularTotalItens()
     {

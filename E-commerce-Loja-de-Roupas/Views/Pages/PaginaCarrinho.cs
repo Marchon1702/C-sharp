@@ -5,7 +5,7 @@ namespace E_commerce_Loja_de_Roupas.Views.Pages;
 internal class PaginaCarrinho : Pagina
 {
     public PaginaCarrinho(Usuario usuarioLogado) : base(usuarioLogado) { }
-    public Usuario DadosDoUsuario { get { return UsuarioLogado; } }
+    protected Usuario DadosDoUsuario { get { return UsuarioLogado; } }
 
     public override void Executar()
     {
@@ -24,13 +24,22 @@ internal class PaginaCarrinho : Pagina
 
         Console.WriteLine($"\nTotal de Produtos: {carrinhoDoUsuario.QuantidadeTotal}");
 
-        Console.WriteLine($"\nTotal da Compra: {carrinhoDoUsuario.PrecoTotal}\n");
+        Console.WriteLine($"\nSubtotal: {carrinhoDoUsuario.PrecoSubtotal}\n");
 
         Console.WriteLine("[Numero do Card] Selecionar Produto   [-2] Finalizar Pedido   [-1] Voltar para Menu Principal ");
         int opcaoEscolhida = int.Parse(Console.ReadLine()!);
-        if ( opcaoEscolhida == -1) VoltarAoMenuPrincipal();
-      
-        if(produtosDoCarrinho.ContainsKey(opcaoEscolhida)) 
+        switch(opcaoEscolhida)
+        {
+            case -1: VoltarAoMenuPrincipal();
+                break;
+            case -2:
+                if (DadosDoUsuario.CarrinhoDoUsuario.QuantidadeTotal == 0) VoltarAoMenuPrincipal();
+                else Navegacoes[-2].Executar();
+                break;
+            default: break; 
+        }
+       
+        if (produtosDoCarrinho.ContainsKey(opcaoEscolhida)) 
         {
             Console.WriteLine($"\n\nProduto na posição {opcaoEscolhida} selecionado...");
             Console.WriteLine("[1] Add ++    [2] Reduzir --      [3]Remover :( \n");

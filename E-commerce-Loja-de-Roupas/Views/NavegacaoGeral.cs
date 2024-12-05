@@ -18,7 +18,9 @@ internal class NavegacaoGeral
             return new Dictionary<int, NavegacaoGeral>
             {
                 { 1, new PaginaProdutos(UsuarioLogado)},
-                { 2, new PaginaCarrinho(UsuarioLogado)}
+                { 2, new PaginaCarrinho(UsuarioLogado)},
+                { 3, new PaginaMeusPedidos(UsuarioLogado)},
+                { -2, new PaginaPagamento(UsuarioLogado)}
             };
         }
     }
