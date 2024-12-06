@@ -8,6 +8,8 @@ internal class PaginaPagamento : Pagina
     protected Usuario DadosDoUsuario => UsuarioLogado;
     protected Carrinho CarrinhoDoUsuario => DadosDoUsuario.CarrinhoDoUsuario;
 
+    public double TotalAhPagar { get; private set; }
+
     public override void Executar()
     {
         base.Executar();
@@ -21,10 +23,10 @@ internal class PaginaPagamento : Pagina
         Console.WriteLine($"\nTotal de Itens: {CarrinhoDoUsuario.QuantidadeTotal}");
         Console.WriteLine($"Subtotal: {CarrinhoDoUsuario.PrecoSubtotal}");
         double frete = new Random().Next(11, 31);
-        double totalAhPagar = CarrinhoDoUsuario.PrecoSubtotal >= 300 ? CarrinhoDoUsuario.PrecoSubtotal : CarrinhoDoUsuario.PrecoSubtotal + frete;
-        CarrinhoDoUsuario.CapturaTotalComFrete(totalAhPagar);
-        if (totalAhPagar == CarrinhoDoUsuario.PrecoSubtotal) Console.WriteLine("Cupom de Frete Grátis Adicionado!");
-        Console.WriteLine($"Total a Pagar: {totalAhPagar}");
+        TotalAhPagar = CarrinhoDoUsuario.PrecoSubtotal >= 300 ? CarrinhoDoUsuario.PrecoSubtotal : CarrinhoDoUsuario.PrecoSubtotal + frete;
+        CarrinhoDoUsuario.CapturaTotalComFrete(TotalAhPagar);
+        if (TotalAhPagar == CarrinhoDoUsuario.PrecoSubtotal) Console.WriteLine("Cupom de Frete Grátis Adicionado!");
+        Console.WriteLine($"Total a Pagar: {TotalAhPagar}");
         Console.WriteLine("----------------------------------------------------");
         Console.WriteLine("\n [1] Pagar Agora         [-1] Voltar ao Menu Principal");
 
@@ -54,7 +56,9 @@ internal class PaginaPagamento : Pagina
         Console.WriteLine("Chave Pix: code.clothes@gmail.com");
         Console.WriteLine("Pressione Enter para confirmar...\n");
         Console.ReadKey();
-        DadosDoUsuario.PedidosFinalizados.FinalizarPedido(CarrinhoDoUsuario);
+        Carrinho carrinhoFinalizado = new Carrinho(CarrinhoDoUsuario.Produtos.ToList());
+        carrinhoFinalizado.CapturaTotalComFrete(TotalAhPagar);
+        DadosDoUsuario.PedidosFinalizados.FinalizarPedido(carrinhoFinalizado);
         Console.WriteLine("Pedido Confirmado, Volte Sempre :)");
         Thread.Sleep(3000);
         CarrinhoDoUsuario.ResetarCarrinho();
@@ -82,7 +86,8 @@ internal class PaginaPagamento : Pagina
             VoltarAoMenuPrincipal();
         }
 
-        DadosDoUsuario.PedidosFinalizados.FinalizarPedido(new Carrinho(CarrinhoDoUsuario.Produtos.ToList()));
+        Carrinho carrinhoFinalizado = new Carrinho(CarrinhoDoUsuario.Produtos.ToList());
+        carrinhoFinalizado.CapturaTotalComFrete(TotalAhPagar);
         Console.WriteLine("\nPedido Confirmado, Volte Sempre :)");
         Thread.Sleep(3000);
         CarrinhoDoUsuario.ResetarCarrinho();

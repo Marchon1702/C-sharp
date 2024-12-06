@@ -12,20 +12,21 @@ internal class PaginaMeusPedidos : Pagina
     {
         base.Executar();
         ExibirTituloDaOpcao("Meus Pedidos");
-        Console.WriteLine("-------------------Resumo-da-Compra------------------");
+       
         foreach (Carrinho carrinhoFinalizado in DadosDoUsuario.PedidosFinalizados.Finalizados)
         {
-            foreach(Produto produto in carrinhoFinalizado.Produtos)
+            Console.WriteLine("-------------------Resumo-da-Compra------------------");
+            foreach (Produto produto in carrinhoFinalizado.Produtos)
             {
-                Console.WriteLine(produto.Nome);
-                Console.WriteLine(produto.Tamanho);
-                Console.WriteLine(produto.QtdAhComprar);
+                Console.WriteLine($"Nome: {produto.Nome}");
+                Console.WriteLine($"Tamanho: {produto.Tamanho}");
+                Console.WriteLine($"Quantidade: {produto.QtdAhComprar}");
                 Console.WriteLine("------------------------------------");
             }
             Console.WriteLine($"\nTotal de Itens: {carrinhoFinalizado.QuantidadeTotal}");
             Console.WriteLine($"Valor Pago: {carrinhoFinalizado.TotalComFrete}");
             Console.WriteLine("Status: Em rota de entrega ->");
-            Console.WriteLine("----------------------------------------------------");
+            Console.WriteLine("----------------------------------------------------\n");
         }
 
         Console.WriteLine("[-1] Voltar ao Menu Principal");

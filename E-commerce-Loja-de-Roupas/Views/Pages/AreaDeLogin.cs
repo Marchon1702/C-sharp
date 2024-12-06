@@ -8,20 +8,30 @@ internal class AreaDeLogin
     private string? senhaInputada = null;
     public bool Liberado { get { return ValidaUsuario(); } }
     public Usuario? Usuario { get; private set; }
+    private UsuariosGeral UsuariosGeral = new();
 
     public void Verificar()
     {
+        Console.Clear();
         bool sair = false;
         do
         {
-            Console.WriteLine("Você está acessando a Loja Virtual Code Clothes :)");
+            Console.WriteLine("Você está acessando a Loja Virtual Code Clothes :)\n");
+
+            Console.WriteLine("[1] Continuar com login         [2] Criar uma conta");
+            int opcaoEscolhida = int.Parse(Console.ReadLine()!);
+            if (opcaoEscolhida == 2) CriarConta();
+
             Console.WriteLine("\n-------------------Login-Área--------------------");
             Console.Write("Usuário: ");
             usuarioInputado = Console.ReadLine();
 
             Console.Write("Senha: ");
-            senhaInputada = Console.ReadLine();
+            senhaInputada = Console.ReadLine();         
+
             Console.WriteLine("-------------------------------------------------");
+
+
             if (Liberado)
             {
                 Console.WriteLine($"Bem Vindo {usuarioInputado}!");
@@ -40,8 +50,7 @@ internal class AreaDeLogin
 
     private bool ValidaUsuario()
     {
-        UsuariosGeral usuariosGeral = new();
-        List<Usuario> todosOsUsuarios = usuariosGeral.RetornarTodosOsUsuarios().ToList();
+        List<Usuario> todosOsUsuarios = UsuariosGeral.RetornarTodosOsUsuarios().ToList();
         foreach (Usuario usuarioAhConferir in todosOsUsuarios)
         {
             if (usuarioAhConferir.Nome == usuarioInputado && usuarioAhConferir.Senha == senhaInputada)
@@ -53,5 +62,61 @@ internal class AreaDeLogin
 
         Usuario = new("Convidado", "Convidado", "Convidado", new List<Produto>());
         return false;
+    }
+
+    public void CriarConta()
+    {
+        Console.Clear();
+        List<Usuario> todosOsUsuarios = UsuariosGeral.RetornarTodosOsUsuarios().ToList();
+        bool continuar = false;
+        Console.WriteLine("Você está acessando a Loja Virtual Code Clothes :)");
+        Console.WriteLine("\n-------------------Criar-uma-Conta--------------------");
+
+        Console.Write("Crie um nome de Usuário: ");
+        usuarioInputado = Console.ReadLine();
+        do
+        {
+            if (usuarioInputado == null || usuarioInputado == "")
+            {
+                Console.WriteLine("Seu nome deve conter no minimo 1 caractere! ");
+                usuarioInputado = Console.ReadLine();
+            }
+            else continuar = true;
+        } while (!continuar);
+
+        bool validaUsuarioInputado = todosOsUsuarios.Any(user => user.Nome.Equals(usuarioInputado));
+        do
+        {
+            if (validaUsuarioInputado || usuarioInputado == "Convidado")
+            {
+                Console.WriteLine("Já existe um Usuário com esse nome!");
+                usuarioInputado = Console.ReadLine();
+                continuar = false;
+            } else continuar = true;
+        } while (!continuar);
+
+        Console.Write("Crie uma senha para a sua conta: ");
+        senhaInputada = Console.ReadLine();
+        do
+        {
+            if (senhaInputada == "" || senhaInputada == null)
+            {
+                Console.WriteLine("Sua senha deve ter um valor");
+                senhaInputada = Console.ReadLine();
+                continuar = false;
+            } else continuar = true;
+        } while (!continuar);
+
+
+        Console.Write("Digite o endereço para entrega: ");
+        string endereco = Console.ReadLine()!;
+        endereco ??= endereco = "Não informado"; // Se o usuário for nulo, enderco recebe "Não informado"!
+        Console.WriteLine("Criando Conta...");
+        Usuario novoUsuario = new(usuarioInputado!, senhaInputada!, endereco, new List<Produto>());
+        UsuariosGeral.AdicionarUsuario(novoUsuario);
+        Console.WriteLine("Usuário criado, voltando para área de login...");
+        Console.WriteLine("---------------------------------------------------------");
+        Thread.Sleep(3000);
+        return;       
     }
 }
