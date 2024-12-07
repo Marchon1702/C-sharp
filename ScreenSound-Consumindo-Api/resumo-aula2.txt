@@ -1,0 +1,60 @@
+﻿Como modelar um Json para uma classe (Deserialização)
+
+Para modelar um Json em C# utilizamos um recurso chamado JsonPropertyName, ela é capaz de atribuir o valor de uma contido em uma chave(propriedade) Json.
+
+Ex: 
+	internal class Musica
+{
+    [JsonPropertyName("song")]
+    public string? Nome { get; set; }
+    [JsonPropertyName("artist")]
+    public string? Artista { get; set; }
+    [JsonPropertyName("genre")]
+    public string? Genero { get; set; }
+    [JsonPropertyName("duration_ms")]
+    public int Duracao { get; set; }
+
+    public void ExibirDetalhesDaMusica()
+    {
+        Console.WriteLine($"Artista: {Artista}");
+        Console.WriteLine($"Nome: {Nome}");
+        Console.WriteLine($"Gênero: {Genero}");
+        Console.WriteLine($"Duração: {Duracao/1000} segs");
+    }
+}
+
+Para atribuir o valor de uma chave Json a uma propriedade de classe, devemos escrever entre chaves exatamente na linha acima da propriedade "[JsonPropertyName("Nome da Chave no Json")]" 
+
+Adendo: O nome utilizado para essa pratica mostrada acima é Anotação. Ela é feita sempre que queremos Deserializar um Json para uma classe.
+
+Isso fará com que na hora da deserialização os valores das chave Json informadas passem para as propriedades.
+
+Deserializando um Json para uma classe.
+
+Após termos uma classe modelada e com sua devidas Anotações, podemos fazer a fase final da deserialização
+
+using (HttpClient client = new HttpClient())
+{
+    try
+    {
+        string resposta = await client.GetStringAsync("https://guilhermeonrails.github.io/api-csharp-songs/songs.json");
+        var musicas = JsonSerializer.Deserialize<List<Musica>>(resposta)!;
+        musicas[new Random().Next(1, 56)].ExibirDetalhesDaMusica();
+    }
+    catch (Exception ex) 
+    {
+        Console.WriteLine("Erro na requisição...");
+        Console.WriteLine(ex.Message);
+    }
+}
+
+Pós pegarmos o Json, devemos utilizar o Objeto nativo do C# chamado JsonSerializer.
+
+Esse Objeto oferece um método estático chamado Deserializer(Deserialização)
+
+Ex: 
+var musicas = JsonSerializer.Deserialize<List<Musica>>(resposta)!;
+
+Após acessarmos o método Deserializer devemos passar para ele em generics <> o tipo de dado que será retornado que no caso acima é uma Lista com valores do Tipo Musica e entre parênteses o arquivo Json.
+
+Após isso já temos a nossa disposição aquele Json pronto para ser usado em C#. 

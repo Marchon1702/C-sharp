@@ -1,0 +1,22 @@
+﻿Fazendo uma requisição com HttpClient
+
+Assim como no JavaScript temos o fetch e o axios, em C# podemos fazer uma requisição usando a biblioteca HttoCLient.
+
+Ex: 
+using (HttpClient client = new HttpClient())
+{
+    try
+    {
+        string resposta = await client.GetStringAsync("https://guilhermeonrails.github.io/api-csharp-songs/songs.json");
+        Console.WriteLine(resposta);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Erro na requisição...");
+        Console.WriteLine(ex.Message);
+    }
+}
+
+A sintaxe padrão da requisição é essa, utilizamos o try, catch para controlar caso algo de errado, fazemos uma outra alterantiva.
+
+Imaginando que essa fosse uma requisiçÃo para uma aplicação de músicas, caso a requisição não funcionasse no bloco catch poderiamos lançar uma exceção(Exception), nela poderia por exemplo mostrar uma coleçÃo de musicas local, ou até mesmo de outro endereço(endPoint).
