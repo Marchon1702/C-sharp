@@ -11,7 +11,17 @@ using (HttpClient client = new HttpClient())
         //LinqFilter.FiltrarTodosOsGeneros(musicas);
         //LinqOrder.ExibirTodosOsArtistasOrdenados(musicas);
         //LinqFilter.FiltrarProGeneroMusical(musicas, "rock");
-        LinqFilter.FiltrarMusicasPorArtista(musicas, "Michael Jackson");
+        //LinqFilter.FiltrarMusicasPorArtista(musicas, "Michael Jackson");
+
+        MusicasFavoritas minhasFavoritas = new("Matheus");
+        minhasFavoritas.AdicionarMusicaFavorita(musicas[9]);
+        minhasFavoritas.AdicionarMusicaFavorita(musicas[93]);
+        minhasFavoritas.AdicionarMusicaFavorita(musicas[23]);
+        minhasFavoritas.AdicionarMusicaFavorita(musicas[308]);
+        minhasFavoritas.AdicionarMusicaFavorita(musicas[1977]);
+
+        minhasFavoritas.ExibirMusicasFavoritas();
+        minhasFavoritas.GerarArquivoJson();
     }
     catch (Exception ex) 
     {

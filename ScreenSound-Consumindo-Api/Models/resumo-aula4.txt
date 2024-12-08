@@ -1,0 +1,44 @@
+﻿Serializando dados e criando arquivos JSON
+
+Nas aulas anteriores nós apredemos a Deserializar um JSON, essa ação pegar o arquivo JSON e atribui ele a uma classe que está relacionada com o atributos de mesmo nomeo ou então por anotações com JsonPropertyName. Agora vamos fazer o contrário, Serializar propriedades de uma classe para um arquivo JSON e criar esse arquivo em um diretório.
+
+Ex: 
+ public void GerarArquivoJson()
+    {
+        string json = JsonSerializer.Serialize(new
+        {
+            nome = Nome,
+            musicasFavoritas = ListaDeFavoritas
+        });
+        Console.WriteLine(json);
+        string nomeDoArquivo = $"favoritas-de-{Nome}.Json";
+
+        File.WriteAllText(nomeDoArquivo, json);
+        Console.WriteLine($"{nomeDoArquivo} gerado em {Path.GetFullPath(nomeDoArquivo)}");
+    }
+
+Usando o método estático Serialize dentro do Objeto JsonSerializer, devemos atribuir os dados que se tornarão um JSON. No caso acima o argumento passado para o Serializer é um Objeto anônimo, usando new {}, nós podemos retornar um objeto sem estar ligado diretamente a uma classe.
+
+Após criamos a estrutura do JSON desejada, podemos criar o nome do arquivo, e com o método estático WriteAllText(), passamo o nome do arquivo a ser criado, e como segundo argumento o próprio arquivo.
+
+Path,GetFullPath é uma método estático do Objeto Path que usamos para localizar o arquivo no qual o arquivo se encontra.
+
+Adendo: O C# é capaz de criar diversos arquivos como Txt entre outros.
+
+Ex:
+    public void GerarDocumentoTXTComAsMusicasFavoritas()
+    {
+        string nomeDoArquivo = $"musicas-favoritas-{Nome}.txt";
+        using (StreamWriter arquivo = new StreamWriter(nomeDoArquivo))
+        {
+            arquivo.WriteLine($"Músicas favoritas do {Nome}\n");
+            foreach (var musica in ListaDeFavoritas)
+            {
+                arquivo.WriteLine($"- {musica.Nome}");
+            }
+        }
+        Console.WriteLine("txt gerado com sucesso!");
+    }
+
+No caso acima está sendo criado um arquivo Txt com a Objeto StreamWriter.
+
