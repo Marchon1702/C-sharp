@@ -1,0 +1,42 @@
+﻿Arrays em C#
+
+Em C# os arrays por obrigação devem receber eem sua declaração o seu comprimento total, a menos que seus valores sejam declarados na mesma linha. 
+
+Declarações de um array
+
+Arrays em C# possuem diversas declarações abaixo temos os exemplos:
+
+Ex:
+	
+	string[] arrayDeStrings = new string[5];
+	Esse array foi criado e suporta no máximo 5 valores dentro dele.
+
+	Array arrayDeInt = Array.CreateInstance(typeof(int), 5);
+	setValue(2, 0);
+	setValue(4, 1);
+	setValue(34, 2);
+	setValue(21, 3);
+	setValue(298, 4);
+
+	Essa declaração não define o tipo de dado que o array tem logo no começo, ele define apenas que a váriavel criada é filha da superclasse Array, logo após seu tipo e comprimento é declarado através do método estático CreateInstance(typeof(tipo), comprimento);
+
+	Adendo: // Isso é o mesmo que Array arrayDeInt = new double[5];
+
+	Declaração omitindo Length
+	int[] arrayDeInt = new {1, 2, 3, 4, 5};
+	Declaração de tamanho não é necessária porque seus valores já foram atribuidos na sua declaração.
+
+Métodos estáticos da superclasse Array
+
+GetValue - retorna o conteúdo/valor de um elemento pelo índice.
+GetLength -	retorna o números de elementos do array.
+Rank -	retorna o número de dimensões de um array.
+CopyTo -	cria uma cópia de todos os valores de um array.
+Sort -	ordena os valores de um array de forma ascendente.
+Reverse -	inverte a ordem de elementos de um array.
+Clone -	cria uma cópia do array.
+Length -	retorna o número de elementos de um array.
+IndexOf -	encontra a primeira ocorrência de um elemento no array.
+LastIndexOf -	encontra a última ocorrência de um elemento no array.
+Clear -	limpa todas as posições de um array.
+Exists -	verifica se existe ou não um elemento no array.

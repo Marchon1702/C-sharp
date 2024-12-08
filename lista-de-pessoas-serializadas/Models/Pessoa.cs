@@ -8,7 +8,7 @@ internal class Pessoa
     public int Idade { get; set; }
     public string Email { get; set; }
 
-    public static void SerializarRegistros(List<Pessoa> pessoas)
+    public static void SerializarRegistrosEGerarArquivo(List<Pessoa> pessoas)
     {
         string json = JsonSerializer.Serialize(pessoas);
         Console.WriteLine(pessoas);
@@ -19,7 +19,7 @@ internal class Pessoa
         Console.WriteLine($"Json salvo em: {Path.GetFullPath(fileName)}");
     }
 
-    public static List<Pessoa> DeserializaRegistros(string filename)
+    public static List<Pessoa> DeserializaRegistrosDeUmArquivo(string filename)
     {  
         if(File.Exists(filename))
         {

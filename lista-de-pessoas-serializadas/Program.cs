@@ -41,10 +41,10 @@ using lista_de_pessoas_serializadas.Models;
 //    if(fim == "S" || fim == "s") finalizado = true;
 //} while (finalizado == false);
 
-//Pessoa.SerializarRegistros(pessoas);
+//Pessoa.SerializarRegistrosEGerarArquivo(pessoas);
 
-List<Pessoa> listaDePessoas = Pessoa.DeserializaRegistros("lista-de-pessoas.json");
+List<Pessoa> listaDePessoas = Pessoa.DeserializaRegistrosDeUmArquivo("lista-de-pessoas.json");
 Thread.Sleep(3000);
 Console.Clear();
-Console.WriteLine("Filtrados por idade");
+Console.WriteLine("Filtrados por idade...\n");
 Pessoa.FiltrarPorIdade(listaDePessoas, 12);
