@@ -1,0 +1,33 @@
+﻿LINQ 
+
+Linq é uma bibliotexa c# que nos permite selecionar arquivos baseados em uma condição especifica, podendo filtrar depedendo de o valor de um atributo.
+
+O método Where dentro da biblioteca LINQ serve para recuperarmos valores de uma lista que possuem determinada caracteristica, ele retorna uma nova lista com os elementos da lista de referência que atende a condição estabelecida.
+
+Ex:
+	List<int> numeros = new List<int> {1, 2, 3, 4, 5};
+
+	var menoresQueQuatro = numeros.Where(numero => numero < 4)
+
+	retorno será // 1, 2, 3
+
+O método Select retorna um valor de uma propriedade dentro de um objeto.
+
+List<Pessoa> pessoas = new Pessoa {
+{
+	Nome: "Matheus",
+	Sobrenome: "Marchon"
+},
+{
+	Nome "José",
+	Sobrenome: "Mauro"
+}
+};
+
+Supondo que eu queira retornar todos os nomes da Lista de pessoas
+
+var todosOsNomes = pessoas.Select(pessoa => pessoa.Nome).Distinct();
+
+retorno será {"Matheus", "José"}
+
+O Distinct serve para que caso haja mais de um objeto com o mesmo valor em seu atributo, ele exiba apenas uma vez.
