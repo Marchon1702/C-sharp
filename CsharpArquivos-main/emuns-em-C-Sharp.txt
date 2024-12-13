@@ -1,0 +1,64 @@
+Em um cenário onde temos uma classe que representa um botão, e esse botão pode apenas receber em 
+sua propriedade cor três tipos de cores. Podemos criar um Enumerador.
+
+Como enumerar as cores que podem ser usadas e contar com a ajuda do compilador. No C#, podemos criar um enumerador 
+com a sintaxe abaixo:
+
+enum CoresBotao
+{
+    Azul,
+    Vermelho,
+    Verde
+}
+
+Agora, a propriedade Cor na classe Botao não será mais do tipo String e sim do tipo CoresBotao - o nome do enum que 
+criamos:
+
+var btnCancelar = new Botao();
+btnCancelar.Texto = "Cancelar";
+btnCancelar.Cor = CoresBotao.Azul;
+
+E enums são fortemente tipados! Em variáveis ou propriedades do tipo CoresBotao só podemos usar valores definidos neste enum:
+
+CoresBotao cor1 = "Azul"; // nao compila
+CoresBotao cor2 = CoresBotao.Verde; //compila
+
+E se estivermos lendo o valor desta propriedade de um arquivo? Já veremos como recuperar conteúdo de um arquivo como string ou int, por enquanto vamos testar com literais:
+
+var linhaDeTextoDoArquivo = "Azul";
+CoresBotao cor1 = linhaDeTextoDoArquivo; // nao compila
+
+Como vimos, a atribuição que tentamos fazer não funciona. Será que um cast funcionará?
+
+var linhaDeTextoDoArquivo = "Azul";
+CoresBotao cor1 = (CoresBotao)linhaDeTextoDoArquivo; // nao compila
+
+Cast entre string e enums também não funciona. E se tentarmos com inteiros?
+
+var numero = 0;
+CoresBotao cor1 = (CoresBotao)numero; // Compila!
+
+Compila! Isso acontece porque podemos atribuir valores inteiros em nossos valores de enum. O enum CoresBotao, debaixo dos panos, foi criado dessa forma pelo compilador C#:
+
+enum CoresBotao
+{
+    Azul = 0,
+    Vermelho = 1,
+    Verde = 2
+}
+
+Mas podemos explicitamente mudar esses valores para o que for mais conveniente em nosso programa:
+
+enum CoresBotao
+{
+
+    Azul = 128,
+    Vermelho = 256,
+    Verde = 512
+}
+
+Console.WriteLine(CoresBotao.Azul == (CoresBotao)128); // escreve True
+Console.WriteLine(CoresBotao.Vermelho == (CoresBotao)256); // escreve True
+Console.WriteLine(CoresBotao.Verde == (CoresBotao)512); // escreve True
+
+Console.WriteLine(CoresBotao.Verde == (CoresBotao)1); // escreve False e não lança exceção.
