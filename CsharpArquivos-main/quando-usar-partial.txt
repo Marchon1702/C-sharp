@@ -1,0 +1,84 @@
+ Para não termos um arquivo de código gigante em que seja difícil encontrar o que queremos, dividimos a classe em vários arquivos com o modificador partial.
+
+Mas será que essa é uma boa prática? Se trabalhamos com uma classe tão grande a ponto de ser difícil encontrar o que desejamos, esse é sinal de que a classe possui responsabilidades demais! Será que o correto não seria dividi-la e distribuir as responsabilidades?
+
+Com certeza! Então, por que o C# possui o modificador partial, se isso parece uma má prática?
+
+Será comum encontrarmos geradores de código, ou seja, programas que geram código C# para nós. Por exemplo, um programa que abre uma planilha Excel e cria um modelo.
+
+Para o arquivo ContaCorrente.xls abaixo:
+
++---------+-----------------+--------+
+| Agencia | Número da Conta | Saldo  |
++---------+-----------------+--------+
+| 486     | 234552          | 231.50 |
++---------+-----------------+--------+
+| 424     | 432425          | 523.23 |
++---------+-----------------+--------+
+
+Um gerador de código pode inferir os tipos de cada coluna e gerar a classe abaixo para nós:
+
+// Arquivo "ContaCorrente.cs" gerado automaticamente
+class ContaCorrente
+{
+    public int Agencia { get; set; }
+    public int NumeroDaConta { get; set; }
+    public double Saldo { get; set; }
+}
+
+Os métodos para sacar, depositar e transferir devem ser escritos por nós! Então a partir do arquivo gerado, adicionamos esses métodos:
+
+// Arquivo "ContaCorrente.cs" gerado automaticamente
+class ContaCorrente
+{
+    public int Agencia { get; set; }
+    public int NumeroDaConta { get; set; }
+    public double Saldo { get; set; }
+
+    public void Sacar(double valor) { ... }
+    public void Depositar(double valor) { ... }
+    public void Transferir(ContaCorrente destino, double valor) { ... }
+}
+
+Opa, mas recebemos uma nova planilha e devemos gerar uma nova classe a partir da planilha atualizada:
+
++---------+-----------------+--------+-------------------+
+| Agencia | Número da Conta | Saldo  | Limite de crédito |
++---------+-----------------+--------+-------------------+
+| 486     | 234552          | 231.50 |      1000.00      |
++---------+-----------------+--------+-------------------+
+| 424     | 432425          | 523.23 |      1200.00      |
++---------+-----------------+--------+-------------------+
+
+E então o gerador irá criar um novo documento ContaCorrente.cs:
+
+// Arquivo "ContaCorrente.cs" gerado automaticamente
+class ContaCorrente
+{
+    public int Agencia { get; set; }
+    public int NumeroDaConta { get; set; }
+    public double Saldo { get; set; }
+    public double LimiteDeCredito { get; set; }
+}
+
+Com isso perdemos o nosso trabalho! Mas se o gerador criar uma classe com o modificador partial, podemos separar nosso código em outro arquivo e atualizá-lo sem medo de perder nosso trabalho:
+
+// Arquivo "ContaCorrente.cs" gerado automaticamente
+partial class ContaCorrente
+{
+    public int Agencia { get; set; }
+    public int NumeroDaConta { get; set; }
+    public double Saldo { get; set; }
+    public double LimiteDeCredito { get; set; }
+}
+
+e
+
+// Arquivo "ContaCorrente_metodos.cs" gerado por nós!
+partial class ContaCorrente
+{
+    public void Sacar(double valor) { ... }
+    public void Depositar(double valor) { ... }
+    public void Transferir(ContaCorrente destino, double valor) { ... }
+}
+

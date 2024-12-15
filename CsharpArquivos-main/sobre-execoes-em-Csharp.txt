@@ -1,0 +1,13 @@
+É interessante sempre ter em mente que as exceções derivam de Exception. Para lançar nossas exceções temos o bloco try-catch. Então, quando encontramos alguma exceção no código contido no bloco try, o fluxo de controle vai para o primeiro manipulador catch, de exceção associada, que está presente em um lugar qualquer da pilha de chamadas.
+
+Caso nenhum manipulador de exceção correspondente seja encontrado no bloco catch, o programa é interrompido devolvendo um erro ao usuário.
+
+É importante detectar uma determinada exceção desde que saibamos trabalhar com ela. Quando capturamos uma Exception no C#, devemos relançá-la usando a palavra reservada throw no fim do bloco catch.
+
+Se o bloco catch define uma variável de exceção, usamos o Message, o StackTrace e o InnerException, por exemplo, para encontrar mais detalhes do erro.
+
+Um bloco finally pode ser utilizado, sendo sempre executado independentemente de uma exceção ser gerada.
+
+Há um termo muito utilizado na computação para se referir especificamente a uma sintaxe para simplificar construções dentro da aplicação. O nome é syntax sugar (açúcar sintático, em português), que vem da ideia de deixar a linguagem “mais doce” de ser estudada.
+
+A syntax sugar existe em diversas linguagens. No C# nós temos o using, palavra reservada que garante a disposição correta de alguns objetos.
