@@ -43,4 +43,23 @@ partial class Program
             }
         }
     }
+
+    // Esse teste sem o método Flush(), escreve todo o conteúdo no documento e depois envia para o Stream adicionar ao arquivo. Isso pode ser prejudicial quando precisamos de diagnósticos instântaneos.
+    static void TestaEscrita()
+    {
+        var caminhoNovoArquivo = "teste.txt";
+
+        using (var fluxoDeArquivo = new FileStream(caminhoNovoArquivo, FileMode.CreateNew))
+        using (var escritor = new StreamWriter(fluxoDeArquivo))
+        {
+            for (int i = 0; i < 1000000; i++)
+            {
+                escritor.WriteLine($"Linha {i}");
+                // O método Flush limpa os buffers do fluxo fazendo com que os dados armazenados nele sejam gravados no arquivo;
+                escritor.Flush(); // Desepeja os bytes já lidos para o FileStream
+                Console.WriteLine($"Linha {i} foi escrita no arquivo. Tecle enter...");
+                Console.ReadLine();
+            }
+        }
+    }
 }
