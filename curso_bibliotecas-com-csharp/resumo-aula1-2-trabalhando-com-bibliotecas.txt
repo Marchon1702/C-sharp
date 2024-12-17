@@ -1,0 +1,42 @@
+Trabalhando com bibliotecas em C#
+
+Em C# podemos criar um projeto do tipo biblioteca de classes, imagine um contexto onde temos diversos 
+projetos com modelos de classes iguais, um banco que possui funtionários, tem o sistema de gerenciamento
+e também o sistema para o cliente, supondo que os dois sistemas utilizam a classe Cliente, com os mesmo atributos e etc...
+Faz sentido criamos uma biblioteca de classes que tenha o modelo Cliente.
+Para criar um projeto de biblioteca de classes podemos criar-lo em algum diretório e depois referencia-lo ao projeto
+que desejamos usar esses modelos.
+
+Indo na pasta do projeto/dependencias que deseja obter uma referência de algum "projeto biblioteca" escolhemos a opção adicionar e
+depois em adicionar referência, escolha o diretório da biblioteca que deseja adicionar e estará feito.
+
+Na pasta que adicionamos o projeto podemos entrar e ver a referência adicionada
+
+Ex: 
+<PropertyGroup>
+  <OutputType>Exe</OutputType>
+  <TargetFramework>net8.0</TargetFramework>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <Nullable>enable</Nullable>
+  <IsPublishable>True</IsPublishable>
+</PropertyGroup>
+
+<ItemGroup>
+  <ProjectReference Include="..\bytebank_Modelos\bytebank_Modelos.csproj" />   <------referencia-adicionada---------
+</ItemGroup>   
+
+Proteção de métodos e classes
+
+Imagine um cenário onde temos métodos ou até mesmo classes que foram criadas como utilidades para uma outra classe a ser 
+exportada, ou seja, eles não foram feitos para serem instanciados nos projetos que usam a biblioteca, apenas nas classes
+da própria biblioteca, seria uma falha de segurança manter esse acesso permitido. Pensando nisso, quando criamos uma classe
+ou um método que não pode "vazar" de dentro da biblioteca, usamos a palavra reservada internal, signifca que aquele 
+método ou classe é visivel apenas dentro do projeto que está sendo criado, no caso o  "projeto biblioteca". Internal
+também funciona para projetos que não são bibliotecas, inclusive por default, quando não atribuimos uma palavra reservada
+antes de class, essa classe é definida como Internal.
+
+Permitindo que uma classe ou método seja visto em seus herdados
+
+Quando temos uma classe funcionário e queremos criar uma classe filha dela fora do projeto, podemos usar Internal protected,
+ele permite que os filhos de funcionário tenha acesso a ele mesmo se não estiverem no mesmo projeto.
+

@@ -1,0 +1,47 @@
+Gerabdo uma DLL
+
+DLL é o formato de um arquivo muito uilizado no windows que posibilta transmitirmos funcionalidades de uma aplicação
+para outras, um do seus grandes beneficios é a coomponetização de funcionalidades, ou seja, com DLLs poodemos
+criar classes estáticas que podem funcionar em diversos projetoos diferentes.
+
+Como gerar DLLs
+
+Toda vez que compilamos um projeto, um arquivo DLL é gerado, para usa-lo em algum projeto basta ir na pasta de 
+dependencias desse projeto, adicionar referencia e procurar pela DLL.
+
+Documentando DLLs
+
+Quando passamos o mouse sobre objetos/classes nativas do .Net/C#, eles retornam uma breve informação que facilita saber 
+qual o uso de um determinado método ou classe, essa documentação é feita da seguinye maneira.
+
+Comentários com // são padrão para um desenvolvedor comentar sobre a funcionalidade de um determinado trecho de
+código, esses comentários não são considerados peloo compilador, já com /// os comentários são considerados
+e no caso de objetos ou métodos eles geram a breve informação citada acima.
+
+Ex:
+    /// <summary>
+    /// GeradorPIX - Classe estática que implementa a geração
+    /// aleatória de chaves PIX usando o recurso da classe Guid.
+    /// </summary>
+
+Esses comentários devem ser inseridos acima do que você deseja gerar a informação, caso a classe retorne parametro
+o template de escrita muda pedindo para que você adicione essa informação.
+
+Configurando para que a documentação seja gerada, basta ir na pasta do projeto, propriedades, saída e ativar a opção
+"Gerar um arquivo contendo a documentação da API.
+
+Não se esqueça de recompilar tanto a lib quanto o arquivo que a tem como referência.
+
+Adicionando um pacote no Nuget.Org
+
+Para adicionar um pacote podemos entrar no site da Nuget.org e lá adicionar o pacote, esse arquivo 
+deve possuir o formato .nupkg,
+
+Criando um arquivo nupkg
+
+Para criar esse arquivo devemos ir na pasta do projeto, propriedades, pacote, geral
+"Gerar pacote nuget na biuld", habilitar a checkbox. Abaixo temos diversas outras informações
+que podem ser adicionadas como, descrição, titulo do pacote, icone entre outras, após essa declaração
+basta compilar o projeto novamente e o arquivo será criado.
+
+Tendo o arquivo, com sua conta microsoft, basta adicionar o pacote pelo nuget.org 
