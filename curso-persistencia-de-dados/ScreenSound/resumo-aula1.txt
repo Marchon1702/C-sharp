@@ -1,0 +1,153 @@
+﻿Criando um Banco de dados Sql Server
+
+De forma nativa o Visual Studio já integra sua interface ao bancos de dados Sql Server, basta garantir que ele ja esteja instalado, para fazer isso vamos no instalador do visual Studio, Modificar, Componentes Individuais, Pesquisar o por Sql e garantir q seua opções estejam marcadas, se não estiver basta marca-las e cliccar em modificar para que o sql server seja instalado na IDE.
+
+Após nos certificarmos que essa instalação foi feita, para abrir o Sql, bastar ir em exibir, "Pesquisador de Objetos do Sql Server".
+
+Na pasta Bancos de Dados, com o botão direto do mouse acharemos a opção "Adicionar Novo Banco de Dados", Definindo nome e caminho o banco será criado.
+
+Criando uma tabela
+
+Para criar uma tabela iremos no arquivo com o Nome do banco criado, com o botão direito encontraremos "Nova consulta", Essa parte serve para adicionarmos sripts de consultas diretamente através da linguagem Sql.
+
+Script para criar uma tabela 
+
+Ex: 
+	create table Artistas(
+        Id INT PRIMARY KEY IDENTITY(1,1),
+        Nome NVARCHAR(255) NOT NULL,
+        Bio NVARCHAR(255) NOT NULL,
+        FotoPerfil NVARCHAR(255) NOT NULL
+);
+
+Após isso a tabela será criada com as colunas desejadas.
+
+Indo no arquivo da tabela criada, com o botão direito encontramos "Exibir Dados", Lá estarão os dados que estão contidos na tabela.
+
+Conectando Banco de Dados a um projeto C#
+
+Para conectar um Banco de Dados Sql com um projeto C# temos um pacote chamado "Microsoft.Data.SqlClient", essa biblioteca nos permite abrir uma conexão com o banco de dados Sql Serve
+
+1 passo: Criar uma classe "Connection" para inserir os métodos de conexão com o banco.
+
+2 passo: Essa classe deve conter um campo que recebe o endereço da cadeia de conexão do banco em formato de string. Para achar este endereço basta acessar as propredades do banco de dados e copiar o endereço na aba cadeia de conexão
+
+3 passo: Criar método para obter a conexão, esse método deve retornar uma intância da classe SqlConnection que recebe em seu construtor o endereço da cadeia de conexão
+
+Ex: 
+using Microsoft.Data.SqlClient;
+using ScreenSound.Modelos;
+
+namespace ScreenSound.Banco;
+
+// Classe responsavel por se conectar com o banco de dados do SQL server.
+internal class Connection
+{
+    // Connect Timeout=30, esse comando representa o tempo de conexão que o banco levará para se conectar, mas esse comando foi tirado a fim de otimizar o tempo da aula.
+    private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=screenSound-DB;Integrated Security=True; Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+
+    // Método responsável por conectar-se ao banco de dados com o parâmetro sendo o endereção da cadeia de conexão.
+    public SqlConnection ObterConexao() => new SqlConnection(connectionString);
+}
+
+Manupilando dados do banco pela aplicação
+
+Usando a arquitetura DAL, criamos uma classe que conecta a tabela artista com a Classe Artista dentro do nosso projeto.
+
+Atenção: Os métodos dessa classe abrem conexÃo com o banco de dados, então toda vez que essa conexÃo for aberta, devemos usar a palara reservada "using", pois ela descarta a variável criada para abrir uma conexão quando o escopo do método é finalizado.
+
+Ex: 
+    internal class ArtistaDAL
+{
+    public IEnumerable<Artista> Listar()
+    {
+        // Estrutura base para abrir uma conexão com o banco, os métodos que manipulam o banco sempre fazem isso.
+        using var connection = new Connection().ObterConexao();
+        connection.Open();
+
+        // Resto da lógica
+    }
+}
+
+Para manipular os dados, fazemos por scripts, que podem ser adicionados a lódica de um método, ou código em geral graças ao ADO.NET.
+
+ADO.NET = O ADO.NET é um conjunto de classes que permitem acesso a dados nas aplicações .NET. Através dele é possível acessar dados de maneira consistente e ainda fazer a separação e a manipulação dos dados.
+
+Usando ADO.NET para listar dados.
+
+Ex: 
+    public IEnumerable<Artista> Listar()
+    {
+        var listaDeArtistas = new List<Artista>();
+        // Abrindo conexão
+        using var connection = new Connection().ObterConexao();
+        connection.Open();
+
+        // Definindo comando a ser executado no banco com a classe SqlCommand
+        string sql = "SELECT * FROM Artistas";
+        // Recebe o comando e conexão como argumento        
+        SqlCommand command = new SqlCommand(sql, connection);
+        // Criando um leitor de dados resultante do comando adicionado
+        using SqlDataReader dataReader = command.ExecuteReader();
+
+        // Enquanto tiver linhas da tabela para ler...
+        while (dataReader.Read())
+        {
+            // Pegando os dados das colunas nas linhas da tabela do indice atual
+            string nomeArtista = Convert.ToString(dataReader["Nome"])!;
+            string bioArtista = Convert.ToString(dataReader["Bio"])!;
+            int idArtista = Convert.ToInt32(dataReader["Id"]);
+
+            // Criando novo objeto Artista com os dados obtidos e adicionando à lista
+            Artista artista = new Artista(nomeArtista, bioArtista);
+            artista.Id = idArtista;
+
+            listaDeArtistas.Add(artista);
+        }
+
+        return listaDeArtistas;
+    }
+
+O SqlCommand é uma classe que nos permite adicionar o script a ser executado dentro do banco de dados, ele recebe uma string desse comando e a instancia da conexão que está aberta.
+
+O SqlDataReader é uma classe que lê linhas de uma tabela dentro do banco. Para manipular melhor linha por linha usamos um while(dataReader.Read()), ou seja enquanto ainda tiver linhas para serem lidas continue.
+
+Com o Convert somos capazes de coverter um valor do banco para uma variável dentro da aplicação. Ele recebe como argumento um dataReader["Nome da coluna"], envolto do tipo de dado a ser convertido.
+
+Para saber se houve alguma modificação no banco podemos capturar o numero de linhas afetadas após uma consulta com o método do command "int linhasAfetadas = command.ExecuteNonQuery();" ele retorna o número de linhas afetadas no banco.
+
+Adicionando dados ao banco
+
+public void Adicionar(Artista artista)
+    {
+        using var connection = new Connection().ObterConexao();
+        connection.Open();
+
+        string sql = "INSERT INTO Artistas (Nome, FotoPerfil, Bio) VALUES (@nome, @perfilPadrao, @bio)"; 
+        SqlCommand command = new SqlCommand(sql, connection);
+        command.Parameters.AddWithValue("@nome", artista.Nome);
+        command.Parameters.AddWithValue("@perfilPadrao", artista.FotoPerfil);
+        command.Parameters.AddWithValue("@bio", artista.Bio);
+
+        // Verificando se a adição foi bem sucedida
+
+        // Método que verifica quantas linha foram afetadas
+        int linhasAfetadas = command.ExecuteNonQuery();
+        Console.WriteLine($"Linhas afetadas {linhasAfetadas}");
+    }
+
+    string sql = "INSERT INTO Artistas (Nome, FotoPerfil, Bio) VALUES (@nome, @perfilPadrao, @bio)"; 
+        SqlCommand command = new SqlCommand(sql, connection);
+
+        // Declarando que "@nome" na consulta é referente ao nome do artista informado no parâmetro do método.
+        command.Parameters.AddWithValue("@nome", artista.Nome);
+
+command.Parameters.AddWhithValue(); = é um método que nos permite referenciar os dados da nossa aplicação com os dados do banco, oque esta escrito com @ deve ser referenciado abaixo após o comando de consulta ser definido.
+
+
+
+
+
+
+
+
