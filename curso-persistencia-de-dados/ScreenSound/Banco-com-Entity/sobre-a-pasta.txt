@@ -1,0 +1,1 @@
+﻿A pasta Banco-com-Entity é o método oficial de conexão com o SqlServer desse projeto, ele executa a conexão e as consultas de forma mais otimizada.

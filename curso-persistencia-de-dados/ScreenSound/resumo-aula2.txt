@@ -1,0 +1,93 @@
+﻿Conectando um banco de dados a uma aplição com o Entity Framework
+
+EF é um framework que nos permite nos conectarmos a um banco de dados de maneira mais simples e direta em relação ao ADONET, ele possui lógicas encapsuladas em seus métodos tornando o nosso código mais facil de ler e escrever.
+
+No EF uma conexão feita é tratada como contexto, para criar esse contexto devemos definir uma classe responsavel por executar a conexão e extender ela (torna-la filha) de DbContext, após isso sobreescrever o método de DbContext OnConfiguring, esse método é executado assim que a classe criada é instanciada, isso é feito pelo ENtity então não é necessário chama-la manualemente. Ela recebe um parametro do tipo DbContextOptionsBuilder, ele serve para executar ações dentro do método como por exemplo se conectar ao banco.
+
+Ex: 
+using Microsoft.EntityFrameworkCore;
+
+namespace ScreenSound.Banco_Entity;
+
+// Classe responsavel por se conectar com o banco de dados do SQL server.
+internal class ScreenSoundContext : DbContext
+{
+    private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=screenSound-DB;Integrated Security=True; Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+
+    // Método responsavel por se conectar com um Banco de SqlServer usando EntityFramework
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(connectionString);
+    }
+}
+
+Através do Entity fazer um CRUD se torna algo muito mais fácil, pois ele já possui sua lógica encapsulada em métodos prontos.
+
+Usando métodos prontos de CRUD do EF
+
+Para ter acesso a dados de uma tabela devemos criar um DBSet<NomeDoObjetoReferenciaNoSistema> NomeDaTabela {get; set;}
+
+Isso faz com que a tabela relacione seus dados com a classe modelo que sua aplição fez para recebe-los, O nome da prop deve ser Exatamente o nome da tabela para que a captura e associação ocorram.
+
+Ex: Na classe de contexto
+   
+namespace ScreenSound.Banco_Entity;
+
+// Classe responsavel por se conectar com o banco de dados do SQL server.
+internal class ScreenSoundContext : DbContext
+{
+    // Crie as propriedades que serão associadas as classes da sua aplicação.
+
+    DbSet<Musica> Musicas {get; set; }
+    
+    // Lógica de se conectar com o banco
+}
+
+Na classe DAL de musicas instanciamos ou recebemos por parâmetro uma instância do Contexto e acessamos os métodos de CRUD nativos do EF.
+
+EX:
+    using ScreenSound.Banco_Entity;
+using ScreenSound.Modelos;
+
+namespace ScreenSound.Banco_com_Entity;
+
+internal class MusicaDAL
+{
+    private readonly ScreenSoundContext context;
+
+    public MusicaDAL(ScreenSoundContext context)
+    {
+        this.context = context;
+    }
+
+    public IEnumerable<Musica> Listar()
+    {
+        return context.Musicas.ToList();
+    }
+
+    public void Adicionar(Musica musica)
+    {
+        context.Musicas.Add(musica);
+        context.SaveChanges();
+    }
+
+    public void Atualizar(Musica musica)
+    {
+        context.Musicas.Update(musica);
+        context.SaveChanges();
+    }
+
+    public void Deletar(Musica musica)
+    {
+        context.Musicas.Remove(musica);
+        context.SaveChanges();
+    }
+
+    public Musica? RecuperarPeloNome(string nome)
+    {
+        return context.Musicas.FirstOrDefault(a => a.Nome.Equals(nome));
+
+    }
+}
+
+ATENÇÃO: Não esqueça de salvar alterações a cada mudança no banco, se n for feito nada mudará.

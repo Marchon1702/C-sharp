@@ -1,0 +1,1 @@
+﻿A pasta Banco-com-AdoNet armazena a forma de se conectar com o banco de dados do SQL server, porém ela é uma forma menos utilizavel pois, existe outra forma de se fazer como por exemplo, usar o EntityFramework que será a forma de uso oficial desse projeto. 

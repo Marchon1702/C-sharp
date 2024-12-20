@@ -1,0 +1,5 @@
+﻿ORM significa Object-Relational Mapping e é uma técnica que permite a interação de um sistema orientado a objetos com um banco de dados relacional de maneira mais intuitiva. O objetivo principal do ORM é mapear os objetos da aplicação diretamente para as tabelas do banco de dados utilizado, abstraindo esse acesso e se tornando mais próximo do que utilizamos em orientação a objetos
+
+Para aplicar essa técnica de maneira mais facilitada, temos as bibliotecas ORM que implementam e trazem um conjunto de ferramentas que fornecem funcionalidades para mapeamento objeto-relacional, gerenciamento de entidades, geração de consultas SQL, entre outros.
+
+Existem diversas bibliotecas ORM para as diversas linguagens de programação, e para o C# a mais utilizada no mercado de trabalho é o Entity Framework.

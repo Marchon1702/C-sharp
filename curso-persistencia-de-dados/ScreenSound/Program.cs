@@ -1,52 +1,67 @@
-﻿using ScreenSound.Banco;
+﻿//using ScreenSound.Banco_AdoNet;
+using ScreenSound.Banco_com_Entity;
+using ScreenSound.Banco_Entity;
 using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
+
+#region // Fazendo a conexão com AdoNet
 //try
 //{
-//    // Intânciando conexão e chamando o método de uma vez...
-//    // Using descarta a variável connection ao final do escopo, isso serve para que a conexão não permaneça aberta permanentemente...
-//    using var connection = new Connection().ObterConexao();
-//    // Abrindo conexão...
-//    connection.Open();
-//    // Mostrando estado da conexão...
-//    Console.WriteLine(connection.State);
+// A conexão já foi aberta no Método listar então não precisa ser aberta nesse escopo
+// Instanciando a classe Connection para ter acesso o método listar
+//var artistaDAL = new ArtistaDAL();
+
+// Adicionar adiciona um artista ao banco de dados...
+//artistaDAL.Adicionar(new Artista("Jonas Brothers", "São irmãos"));
+//artistaDAL.Editar(new Artista("Michael Jackson", "Rei do Pop") { Id = 6});
+
+// Listar retorna uma Lista de Artista instanciados em sua classe...
+//    var listaDeArtistas = artistaDAL.Listar();
+//    foreach (var artista in listaDeArtistas)
+//    {
+//        Console.WriteLine(artista);
+//    }
 //}
 //catch (Exception ex)
 //{
 //    Console.WriteLine(ex.Message);
 //}
+#endregion
 
-try
-{
-    // A conexão já foi aberta no Método listar então não precisa ser aberta nesse escopo
-    // Instanciando a classe Connection para ter acesso o método listar
-    var artistaDAL = new ArtistaDAL();
+#region // Fazendo conexão com EntityFramework
+//try
+//{
+//    using var context = new ScreenSoundContext();
+//    var artistaDAL = new ArtistaDAL(context);
 
-    // Adicionar adiciona um artista ao banco de dados...
-    //artistaDAL.Adicionar(new Artista("Jonas Brothers", "São irmãos"));
-    artistaDAL.Editar(new Artista("Michael Jackson", "Rei do Pop") { Id = 6});
+// Quando formos adicionar um artista ele não deve conter o primary Key definida por nós, apenas no atualizar e deletar que devemos enviar o Id da instacia da classe na aplicação para comparar com o dp banco de dados.
+//var novoArtista = new Artista("Pitty Rockeira", "Rockeira braba") { Id = 1004};
+//artistaDAL.Adicionar(novoArtista);
 
-    // Listar retorna uma Lista de Artista instanciados em sua classe...
-    var listaDeArtistas = artistaDAL.Listar();
-    foreach (var artista in listaDeArtistas)
-    {
-        Console.WriteLine(artista);
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex.Message);
-}
+//artistaDAL.Atualizar(novoArtista);
+//artistaDAL.Deletar(novoArtista);
 
-return;
+//var listaDeArtistas = artistaDAL.Listar();
 
-Artista ira = new Artista("Ira!", "Banda Ira!");
-Artista beatles = new("The Beatles", "Banda The Beatles");
+//foreach (var artista in listaDeArtistas)
+//{
+//    Console.WriteLine(artista);
+//}
 
-Dictionary<string, Artista> artistasRegistrados = new();
-artistasRegistrados.Add(ira.Nome, ira);
-artistasRegistrados.Add(beatles.Nome, beatles);
+//var artistaRecuperado = artistaDAL.RecuperarPeloNome("Michael Jackson");
+
+//Console.WriteLine($"\n\n {artistaRecuperado}");
+//}
+//catch(Exception ex)
+//{
+//    Console.WriteLine(ex.Message);
+//}
+#endregion
+
+
+var context = new ScreenSoundContext();
+var artistaDAL = new ArtistaDAL(context);
 
 Dictionary<int, Menu> opcoes = new();
 opcoes.Add(1, new MenuRegistrarArtista());
@@ -85,9 +100,9 @@ void ExibirOpcoesDoMenu()
     if (opcoes.ContainsKey(opcaoEscolhidaNumerica))
     {
         Menu menuASerExibido = opcoes[opcaoEscolhidaNumerica];
-        menuASerExibido.Executar(artistasRegistrados);
+        menuASerExibido.Executar(artistaDAL);
         if (opcaoEscolhidaNumerica > 0) ExibirOpcoesDoMenu();
-    } 
+    }
     else
     {
         Console.WriteLine("Opção inválida");
