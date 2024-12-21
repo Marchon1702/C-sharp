@@ -1,0 +1,61 @@
+﻿Utilizando migrations para modelagem de banco de dados
+
+Migrations é uma forma de manupilar bancos de dados, sua vantagem é que ele armazena cada mudança a uma tabela própria guardando um historico de ações, cada migration executada é registarda nessa tabela e a classe migration possui um método up, que é oque foi feito naquela migration e o down que reflete em como o banco estava antes da mudança.
+
+Migrations são usadas para criar banco de dados desde de o inicio de um projeto, ele agiliza e automatiza processos de consulta utilizados no banco.
+
+Funcionamento
+
+Para o migration funcionar devemos ter duas libs instaladas
+
+Microsoft.EntityFrameworkCore.Design, ela é responsavel por 
+
+- Habilita os comandos do EF Core CLI (Command Line Interface)
+- Permite a geração de migrações
+- Possibilita o scaffold de contexto e modelos a partir de um banco existente
+- É necessária apenas em tempo de desenvolvimento, não em produção
+
+Microsoft.EntityFrameworkCore.Tools
+
+Fornece comandos adicionais do Package Manager Console para o Visual Studio
+Principais comandos que ela disponibiliza:
+
+- Add-Migration: Cria uma nova migração baseada nas mudanças detectadas nos modelos
+- Update-Database: Aplica migrações pendentes ao banco de dados
+- Remove-Migration: Remove a última migração (se ainda não aplicada)
+- Script-Migration: Gera um script SQL das migrações
+- Get-DbContext: Lista todos os DbContext disponíveis
+- Scaffold-DbContext: Gera código de modelos e contexto a partir de um banco existente
+
+O fluxo da criação de uma migration é o seguinte
+
+Ele se baseada na classe de contexto do EF, olhando para os DbSets, a partir dali ele cria as tabelas de acordo com cada um, lembrando que cada DbSet tem como gerenics a declaração da Classe/Objeto que reprsenta cada linha da tabela.
+
+Ex: 
+	public DbSet<Artista> Artistas { get; set; }
+
+Então a nova migration sabe que existe uma tabela a sere criada com o Nome de Artistas se baseando nas props da classe Artista para criar as colunas.
+
+Após a criação de uma nova migration, para que ela seja efetivamente aplicada devemos digitar Update-Database, assim o migration irá comparar o snapshot do banco anterior e adicionar as mudanças da migration adicionada mais recentemente.
+
+Alterando uma coluna com Migrations
+
+O migrations monitora o comportamento das classes que estão declaradas no DbSet, então queiramos mudar alguma caracterista da coluna de uma tabela, basta alterar a prop da classe que representa uma linha da tabela e adicionar um novo migration, que ele reconhecerá a mudança e fará as alterações no banco de dados.
+
+Adicionando dados nas linha manualmente
+
+Ex:
+
+ migrationBuilder.InsertData("Artistas", new string[] { "Nome", "Bio", "FotoPerfil" }, new object[] { "Pitty", "Ótima dubladora", "https://cdn.pixabay.com/photo/2016/08/08/09/17/");
+
+ Dentro do método up, devemos usar o InsertData passando como parâmetro o nome da tabela, as colunas em formato d array de strings e respectivamente os valores em formato de array de objetos.
+
+Após toda mudança devemos digitar no console Update-Database, isso fará com que a migration atual compare o snapShot da anterior e realize as mudanças.
+
+Resumo de uso no console para gerenciar migrations
+
+Após modificar os modelos: Add-Migration NomeDaMigracao
+
+Para aplicar no banco: Update-Database
+
+Para reverter: Update-Database NomeMigracaoAnterior

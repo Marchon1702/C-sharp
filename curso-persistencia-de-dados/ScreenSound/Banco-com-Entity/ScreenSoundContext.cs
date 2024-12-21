@@ -12,7 +12,7 @@ internal class ScreenSoundContext : DbContext
     public DbSet<Musica> Musicas { get; set; }
 
     // Connect Timeout=30, esse comando representa o tempo de conexão que o banco levará para se conectar, mas esse comando foi tirado a fim de otimizar o tempo da aula.
-    private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=screenSound-DB;Integrated Security=True; Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+    private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=screenSoundV0-DB;Integrated Security=True; Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
     // Método responsavel por se conectar com um Banco de SqlServer usando EntityFramework
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

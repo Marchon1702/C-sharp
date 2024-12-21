@@ -1,0 +1,66 @@
+﻿Generics com DAL e Entity Framework
+
+Imagine um contexto onde temos um CRUD exatamente igual para mais de uma classe do tipo DAL (Uma classe que seus métodos tem a responsabilidade de interagir com o banco de dados), poderiamos criar uma classe DAL geral com generics que serve para diversas tabelas referenciadas pelo DbSet na classe de contexto.
+
+Ex:
+	internal class DAL<T> where T : class 
+{
+    protected readonly ScreenSoundContext context;
+
+    public DAL(ScreenSoundContext context)
+    {
+        this.context = context;
+    }
+
+    // Retorna a DbSet de context que relaciona a classe T do sistema, para a Tabela do Banco "T".
+    public IEnumerable<T> Listar()
+    {
+        // Sabendo que pra acessar os métodos de CRUD do Entity nós temos que informar o nome da tabela a ser executados o método, EX:  context.Artistas.ToList();
+        // O EF criou uma forma de declarar essa informação de forma genérica usando o Set<T>().
+        // Assim quando chamarmos esse métodos nas classes filhas de DAL, o seu gerenic será associado a Set<T>()
+        // Para essa implementação funcionar o generics da classe deve ter uma declaração dizendo qual estrutura esse gerenics é, no caso T é uma class.
+        return context.Set<T>().ToList();
+    }
+}
+
+Na classe DAL acima foram usados recursos base de Generics juntamente com GenericsEF
+
+Em uma classe sem generics, a interação com o banco por um método seria feita da seguinte maneira, conseidere abaixo que estariamos recuperando um DbSet da tabela Artistas e relacionando com Artista
+public DbSet<Artista> Artistas { get; set; }
+
+Essa é a forma direta de fazer essa conexão: 
+
+public IEnumerable<T> Listar()
+    {
+        return context.Artistas.ToList();
+    }
+
+Com generics podemos permitir que esse mesmo método se adeque a diferentes tabelas, bastando apenas declarar qual o tipo que o DbSet<T> guarda na tabela.
+
+public IEnumerable<T> Listar()
+    {
+        return context.Set<T>().ToList();
+    }
+
+    O EF por debaixo dos panos iria referenciar T ao DbSet e acessar sua tabela, mas pra isso funcionar devemos declarar qual estrutura T é.
+
+    Essa declaração é feita ao lado do tipo generico declarado na classe
+
+    Ex:  internal class DAL<T> where T : class 
+
+Usando Func
+
+Imaginando que temos um método que buscr dados através de uma determinada condição, com o Func a condição pode ser passada por parâmetro, isso possibilita que um mesmo método tenha condinções diferentes de busca
+
+ No cenário onde o método de buscar é o FirstOrDefault, Func seria uma função que retorna <T> e um valor bool
+
+ Ex: 
+    public T? RecuperarPor(Func<T, bool> condicao)
+    {
+        return context.Set<T>().FirstOrDefault(condicao);
+    }
+
+A chamada de Func seria RecuperarPor(a => a.Nome.Equals(nomeDigitado));
+
+Ou seja Func recebe uma condição a ser atendida.
+

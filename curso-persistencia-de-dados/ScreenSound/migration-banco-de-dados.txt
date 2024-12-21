@@ -1,0 +1,12 @@
+﻿No contexto de banco de dados, utilizamos as migrations para gerenciar alterações no banco de dados. E no contexto em que estamos trabalhando com o Entity Framework, as migrations são uma maneira de controlar as alterações no banco de dados com base nas modificações do projeto de maneira controlada e automatizada.
+
+Através delas conseguimos fazer inclusão e exclusão de tabelas, alterações de colunas e mudanças de informações, tudo isso atrelado à evolução e crescimento do projeto de forma estruturada.
+
+Além disso, utilizando as migrations, é possível ter um histórico estruturado das alterações que ocorreram no banco de dados, facilitando o trabalho em equipe e também as atualizações em diversos ambientes existentes.
+
+utilização das Migrations no dia a dia
+
+No dia a dia de desenvolvimento de um projeto real, geralmente as migrations já serão introduzidas no início do desenvolvimento do projeto.
+
+Vários recursos são adicionados logo no início do projeto, e com as migrations também funciona assim. Desta maneira, é possível criar o banco e as tabelas completas de forma automatizada através das migrations, além de manter um histórico de alterações no banco de dados à medida que o projeto vai evoluindo e se desenvolvendo.
+
