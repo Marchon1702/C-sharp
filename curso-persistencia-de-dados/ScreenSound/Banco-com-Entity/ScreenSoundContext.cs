@@ -17,6 +17,9 @@ internal class ScreenSoundContext : DbContext
     // Método responsavel por se conectar com um Banco de SqlServer usando EntityFramework
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.
+            UseSqlServer(connectionString)
+            // Usando carregamento lentos apenas quando for necessário com pacote proxies.
+            .UseLazyLoadingProxies();
     }
 }

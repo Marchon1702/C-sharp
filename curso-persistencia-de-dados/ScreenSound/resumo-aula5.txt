@@ -1,0 +1,71 @@
+﻿Criando relacionamento de entidades(tabelas)
+
+Para criar um relacionamento entre tabelas, criamos as propriedades de seus tipos na classes que desejamos, com o migrations ele entenderá que tabelas são relacionadas e criará as ForeginKeys.
+
+Ex:
+	public class Artista 
+{
+    // Virtual para que proxie consiga ver essas props e relaciona-las
+    public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>();
+
+    public Artista(string nome, string bio)
+    {
+        Nome = nome;
+        Bio = bio;
+        FotoPerfil = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+    }
+
+    public string Nome { get; set; }
+    public string FotoPerfil { get; set; }
+    public string Bio { get; set; }
+    public int Id { get; set; }
+}
+
+Na classe Artista tem uma prop que guardar os tipos Musica, então o Migrations entende que existe um relacionamento entre as entidades e cria a foreginKey.
+
+Pacote Microsoft.EntityFramework.Proxies
+
+Para que essas entidades sejam relacionadas por baixo dos panos usamos o pacote "Pacote Microsoft.EntityFramework.Proxies", ele é responsavel por usar o LazyLoadingProxies, um método que carrega um certo tipo de dado somente quando é necessário, enquanto os dados não forem chamados seu carregamento não é efetuado, isso gera um aumento de permoface em nossa aplicação evitando carregamentos desnecessários.
+
+Uso do EFProxies
+
+Quando você habilita o Proxy com .UseLazyLoadingProxies() no seu contexto, o Entity Framework cria uma classe derivada (proxy) em tempo de execução que se parece assim (simplificadamente):
+
+Ex: 
+    public class MusicaProxy : Musica
+{
+    private Artista? _artista;
+    
+    public override Artista? Artista
+    {
+        get 
+        {
+            // Se artista ainda não foi carregado
+            if (_artista == null)
+            {
+                // Carrega do banco apenas quando necessário
+                _artista = Context.Artistas.Find(ArtistaId);
+            }
+            return _artista;
+        }
+        set { _artista = value; }
+    }
+}
+
+Na prática, quando você faz isso:
+
+artistaRecuperado.AdicionarMusica(new Musica(tituloDaMusica) 
+{ 
+    AnoLancamento = Convert.ToInt32(anoLancamento)
+});
+
+O Proxies permite que:
+
+A música seja adicionada à coleção do artista
+O Entity Framework saiba que precisa atualizar a relação no banco
+O carregamento do artista relacionado à música seja feito apenas quando necessário
+
+É por isso que:
+
+As classes precisam ser públicas (para o Proxy poder herdar delas)
+As propriedades precisam ser virtuais (para o Proxy poder sobrescrever)

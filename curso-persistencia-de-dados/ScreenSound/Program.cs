@@ -4,7 +4,6 @@ using ScreenSound.Banco_Entity;
 using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
-
 #region // Fazendo a conexão com AdoNet
 //try
 //{
@@ -68,6 +67,7 @@ opcoes.Add(1, new MenuRegistrarArtista());
 opcoes.Add(2, new MenuRegistrarMusica());
 opcoes.Add(3, new MenuMostrarArtistas());
 opcoes.Add(4, new MenuMostrarMusicas());
+opcoes.Add(5, new MenuMostrarMusicasPorAnoDeLancamento());
 opcoes.Add(-1, new MenuSair());
 
 void ExibirLogo()
@@ -91,6 +91,7 @@ void ExibirOpcoesDoMenu()
     Console.WriteLine("Digite 2 para registrar a música de um artista");
     Console.WriteLine("Digite 3 para mostrar todos os artistas");
     Console.WriteLine("Digite 4 para exibir todas as músicas de um artista");
+    Console.WriteLine("Digite 5 para exibir todas as músicas de um ano");
     Console.WriteLine("Digite -1 para sair");
 
     Console.Write("\nDigite a sua opção: ");
