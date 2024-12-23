@@ -6,9 +6,9 @@ namespace ScreenSound.Banco_com_Entity;
 // DAL é uma classe que contém todos os métodos padrões de um CRUD simples da aplicação em conjunto com o Banco de SQLServer, sabendo que esses métodos se repetem em diversas classes DAL, eles são feitos em DAL sendo a classe pai para evitar códigos iguais em diversas classes DAL.
 
 // Declarando que T é uma classe para usar o EntityGenerics (<T> where T : class )
-internal class DAL<T> where T : class 
+public class DAL<T> where T : class 
 {
-    protected readonly ScreenSoundContext context;
+    private readonly ScreenSoundContext context;
 
     public DAL(ScreenSoundContext context)
     {

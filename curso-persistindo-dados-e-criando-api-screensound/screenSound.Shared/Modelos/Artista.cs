@@ -6,6 +6,7 @@ public class Artista
     // Virtual para que proxie consiga ver essas props e relaciona-las
     public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>();
 
+    public Artista() { }
     public Artista(string nome, string bio)
     {
         Nome = nome;

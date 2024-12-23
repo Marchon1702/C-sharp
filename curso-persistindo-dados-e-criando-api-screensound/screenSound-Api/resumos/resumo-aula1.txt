@@ -1,0 +1,28 @@
+Criando uma API com ASPNET Core
+
+O ASP Net core é usado em diversos tipos de serviços WEB, podendo ser para APIs, ou FrontEnd com Blazor, para criar um proejto de API temos uma estrutura inical básica.
+
+Ex:
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configuração para que o ASPNETCore serialize os dados retornados do banco... 
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+var app = builder.Build();
+
+app.MapGet("/", () =>
+{
+// Código referente as bibliotecas de modelos e banco de dados.
+    DAL<Artista> DAL = new DAL<Artista>(new ScreenSoundContext());
+    return DAL.Listar();
+});
+
+app.Run();
+
+Estrutura de um Projeto bem estruturado
+
+Uma boa estruturação de projeto a se usar ao criar sistemas em um contexto geral, é separar bem as funções, no caso do C#, podemos criar diveros projetos em uma mesma solução, podendo ser os Modelos de Dados e os acessos aos bancos feitos de maneira separada com um projeto do tipo Bilioteca de classes.
+
+Adendo: Não se esqueça de referenciar os namesapces corretamente.
+ 

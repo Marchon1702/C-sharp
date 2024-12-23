@@ -4,7 +4,7 @@ using ScreenSound.Modelos;
 namespace ScreenSound.Banco_Entity;
 
 // Classe responsavel por se conectar com o banco de dados do SQL server.
-internal class ScreenSoundContext : DbContext
+public class ScreenSoundContext : DbContext
 {
     // Criando uma relação da tabela Artistas para uma prop da aplicação, A PROP DEVE CONTER O MESMO NOME DA TABELA.
     // <Artista> significa que a tabela Artistas se refere a classe da aplição Artista.

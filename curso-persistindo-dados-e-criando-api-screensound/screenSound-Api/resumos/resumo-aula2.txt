@@ -1,0 +1,72 @@
+﻿Após criarmos uma estrutura básica de uma APIRest, podemos também criar métodos para que o acesso oua manipulaçÃo de dados seja feita corretamente.
+
+Métodos Get, Post, Put, Delete
+
+Sãp métodos REST, utilizados como uma forma "padronizada" de estabelecer comunicação entre cliente e servidor.
+
+Caracteristicas dos métodos
+
+GET, pode retornar todos os dados de um local, ou pode retornar algum ou alguns especificos a definir pelo argumento que ele é capaz de receber.
+
+POST, Deve receber um arguemento em seu parâmetro para que seja adicionado ao local.
+
+UPDATE, Também deve receber um argumento ao seu parâmetro com o intuito de checar no armazenamento se existe algum dado equivalente ao mesmo.
+
+DELETE, Deve receber alguma informação como argumento para que sirva de comparação com o armazenamento da API, caso encontrado os dados são deletados.
+
+Como injetar dependencias com classes e contexto em um projeto ASPNet core
+
+// Adicionando contexto de EF e classe DAL para evitar repeição de instanciação no código.
+builder.Services.AddDbContext<ScreenSoundContext>();
+builder.Services.AddTransient<DAL<Artista>>();
+
+O código acima define um contexto de um banco que será usado e transient é qualquer classe q será usada mais de uma vez.
+
+Suas declaraçõoes nas requisições devem ser feitas da seguinte maneira
+
+Ex:
+	app.MapGet("/Artistas", ([FromServices] DAL<Artista> artistaDAL) =>
+	// [FromServices] indica que esse dado veio dos serviços internos do sistema.
+
+FromBody para requições com corpo
+
+Quando adicionamos informações em um corpo de uma requisição devemos declarar como parâmetro da função um [FromBody]
+
+Ex: 
+	app.MapPost("/Artistas", ([FromServices] DAL <Artista> artistaDAL, [FromBody] Artista artista)
+
+
+Nesse projeto em especifico houve conflito entre o System.Text.Json e EFProxies, então como solução o retorno final do objeto foi definido de forma "bruta", assim foi evitado o erro de deserialização,
+outras soluções seriam criar um construtor vazio dentro da classe Artista que é a classe a ser deserializada, 
+
+Ex: 
+public class Artista 
+{
+    // Virtual para que proxie consiga ver essas props e relaciona-las
+    public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>();
+
+    // Construtor vazio para evitar conflito com lazyLoader
+    public Artista() { }
+
+    public Artista(string nome, string bio)
+    {
+        Nome = nome;
+        Bio = bio;
+        FotoPerfil = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+    }
+
+    public string Nome { get; set; }
+    public string FotoPerfil { get; set; }
+    public string Bio { get; set; }
+    public int Id { get; set; }
+}
+
+Outra solução seria retornar uma lista nó metodo recuperarPor na classe DAL
+
+Ex:
+public IEnumerable<T> RecuperarPor(Func<T, bool> condicao)
+{
+    return context.Set<T>().Where(condicao).ToList();
+}
+
+A diferença é que retornaria uma lista de um item só, e o acesso a esse item seria em modo lista.
