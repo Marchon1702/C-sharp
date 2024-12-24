@@ -1,0 +1,18 @@
+﻿DTO é a sigla referência para Data Transfer Objects ou Objetos de Transferência de Dados, e eles são utilizados nos projetos para transferir dados da camada da aplicação para a camada de apresentação.
+
+O DTO é um objeto que define como os dados serão transmitidos através da rede, isolando as camadas de dados e permitindo que elas tenham acesso somente ao que foi determinado.
+
+Quando temos uma requisiçãoo onde o usuário deve inserir apenas informações especificas, e não todas q o objeto necessita, exemplo.
+
+{
+	"id": (int criado dinamicamente pelo banco de dados)
+	"nome": "Matheus"
+	"bio": "Cara legal!"
+	"FotoPerfil": (string com valor padrão)
+}
+
+No caso acima temos valores criados dinamicamente que o usuário não tem a responsabilidade de atribuir no corpo da sua requisição, os únicos valore obrigatórios para ele seriam nome e bio.
+
+O ideal nesses casos é usar o conceito DTO, que modela o corpo da requisição para que o usuário insira somente oque é necessário.
+
+Em C# esse objeto modelado tem como estrutura o record, que são mais leves q as classes, e como ele são modelados de acordo com oquê a classe recebe faz todo sentido.

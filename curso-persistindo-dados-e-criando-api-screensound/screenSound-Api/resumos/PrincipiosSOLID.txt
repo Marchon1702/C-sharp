@@ -1,0 +1,15 @@
+﻿Princípios do Código Sólido na orientação a objetos
+
+A brincadeira com o termo "código sólido" vem do acrônimo SOLID. Cada letra representa um dos 5 princípios de orientação a objetos que nos ajudam a manter o código organizado:
+
+Single Responsibility Principle (SRP), ou, Princípio da Responsabilidade Única. Esse princípio diz que as classes devem ser coesas, ou seja, terem uma única responsabilidade. Classes assim tendem a ser mais reutilizáveis, mais simples, e propagam menos mudanças para o resto do sistema.
+Open Closed Principle (OCP), ou Princípio do Aberto Fechado. Diz que as classes devem poder ter seu comportamento facilmente estendidas quando necessário, por meio de herança, interface e composição. Ao mesmo tempo, não deve ser necessário abrir a própria classe para realizar pequenas mudanças. No fim, o princípio diz que devemos ter boas abstrações espalhadas pelo sistema.
+Liskov Substitution Principle (LSP), ou Príncipio da Substituição de Liskov. Esse princípio diz que precisamos ter cuidado para usar herança. Herança é um mecanismo poderoso, mas deve ser usado com parcimônia, evitando os casos de Gato-estende-Cachorro, apenas por possuírem algo em comum.
+Interface Segregation Principle (ISP), ou Princípio da Segregação de Interfaces. Esse princípio diz que nossos módulos devem ser enxutos, ou seja, devem ter poucos comportamentos. Interfaces que tem muitos comportamentos geralmente acabam se espalhando por todo o sistema, dificultando manutenção.
+Dependency Inversion Principle (DIP), ou Princípio da Inversão de Dependências. Esse princípio diz que devemos sempre depender de abstrações, afinal abstrações mudam menos e facilitam a mudança de comportamento e as futuras evoluções do código.
+
+Se conseguirmos seguir todas essas dicas, teremos código fácil de evoluir. As mudanças serão feitas em pontos específicos, e problemas não serão propagados.
+
+O problema é que todos nós sabemos que não é fácil escrever código seco e sólido. Eu fui bem sucinto na explicação de cada um dos princípios. É possível discutir todos eles com muito mais profundidade.
+
+Vale lembrar também o código seco (ou DRY): o programador não deve espalhar o mesmo código por todo o sistema; ele deve ser reutilizado. DRY vem de "Don't Repeat Yourself". Todos nós sabemos que repetição de código é um problema gravíssimo; eles dificultam a manutenção e propagam erros muito rapidamente.
