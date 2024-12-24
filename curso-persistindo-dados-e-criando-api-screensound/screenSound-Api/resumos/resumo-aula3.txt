@@ -1,0 +1,49 @@
+﻿Separando responsabilidades de uma classe
+
+No arquivo program.cs não é uma boa pratica se manter com todas os endpoints configurados lá, então para encapsular melhor usamos classes Endepoints que são como uma extensão da classe program.cs
+
+Ex: 
+
+Endpoints/ArtistaExtensios
+
+public static class ArtistaExtensions
+{
+    // Esse parametro indica q o método extende a classe program.cs usando a variável app....
+    public static void AddEndPointsArtista(this WebApplication app)
+    {
+        // Lógica de endpoints 
+    }
+}
+
+Isso também acontece na classe MusicaExtensios com o parâmetro WebAplication app, o app do nosso método passa a ser o mesmo do program.cs e possibilita chamar o método estatico de forma direta.
+
+Program.cs
+
+// Código Omitido...
+
+var app = builder.Build();
+
+app.AddEndPointsArtista();
+app.AddEndPointsMusica();
+
+Request
+
+Os Requests são maneiras de modelar um objeto para que ele exiga atribuição de valores necessárias em suas classes.
+
+Através da estrutura record podemos declarar um request e em seus parâmetros definir quais informações o cliente deve inserir no corpo de uma requisição POST por exemplo.
+
+EX: 
+    Quando temos uma requisição onde o usuário deve inserir apenas informações especificas, e não todas q o objeto necessita, exemplo.
+
+{
+	"id": (int criado dinamicamente pelo banco de dados)
+	"nome": "Matheus"
+	"bio": "Cara legal!"
+	"FotoPerfil": (string com valor padrão)
+}
+
+Usamos a estrutura record com request 
+
+// A estrutura de dados record é um recurso C# criado para modelarmos diretamente quais dados o cliente deve fornecer como parâmetro para uma determinada requisição. No caso abaixo está sendo definido que o usuário precisar fornecer apenas nome e bio.
+
+public record ArtistaRequest( [Required] string nome, [Required] string bio);

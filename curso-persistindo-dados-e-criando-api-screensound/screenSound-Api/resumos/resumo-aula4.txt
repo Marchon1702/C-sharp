@@ -1,0 +1,75 @@
+﻿Relacionando duas tabelas com migrations
+
+Imagine um, cenário onde temos duas entidades de relação Muitos-para-Muitos, sendo elas Musica e Genero, ou seja, Um genero pode ter muitas músicas e Uma Musica pode ter muitos Generos.
+
+Ex:
+
+public class Genero
+{
+    public int Id { get; set; }
+    public string? Nome { get; set; } = "";
+    public string? Descricao { get; set; } = "";
+    // Um genero pode ter muitas músicas
+    public virtual ICollection<Musica> Musicas { get; set; }
+}
+
+public class Musica
+{
+    public Musica(string nome)
+    {
+        Nome = nome;
+    }
+
+    public string Nome { get; set; }
+    public int Id { get; set; }
+    public int? AnoLancamento { get; set; }
+    public int? ArtistaId { get; set; }
+
+    // Com proxies as classes que se relacionam deve ser virtuais
+    public virtual Artista? Artista { get; set; }
+    
+    // Uma Musica pode ter muitos generos 
+    public virtual ICollection<Genero> Generos { get; set; }
+}
+
+
+OnModelCreating é um método usado para definir as relações entre Tabelas de um banco
+
+ protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Construindo referências entre entidades Genero e Musica
+
+        // A entidade Musica
+        modelBuilder.Entity<Musica>()
+            // Tem muitos Generos
+            .HasMany(c => c.Generos)  // 'c' refere-se à entidade Musica
+            // Com muitas Musicas
+            .WithMany(c => c.Musicas);  // 'c' refere-se à entidade Genero
+
+        // Na prática a Classe Musica tem uma prop que é uma lista de Generos e a classe Genero tem uma prop que é uma lista de Musicas.
+    } 
+
+Após essas configurações o Migrations construirá uma tabela Intermediária que relaciona Musica e Genero, essa tabela possui em cada linha uma PrimaryKey Composta, que são dadas pela junção do ID da Musica e de seu Genero.
+
+Customizando a tabela intermediária:
+Caso precise adicionar campos adicionais (por exemplo, data de criação), será necessário criar manualmente uma classe para a tabela intermediária e configurá-la no modelo.
+
+Para criar manualmente uma classe para a tabela intermediária e configurá-la no Entity Framework Core. Isso é útil quando você precisa adicionar campos adicionais na tabela de junção, como Data de Associação ou Observações.
+
+Ex:
+
+public class MusicaGenero
+{
+    public int MusicaId { get; set; } // FK para Musica
+    public Musica Musica { get; set; } // Propriedade de navegação
+
+    public int GeneroId { get; set; } // FK para Genero
+    public Genero Genero { get; set; } // Propriedade de navegação
+
+    // Campos adicionais na tabela intermediária
+    public DateTime DataCriacao { get; set; }
+    public string Observacao { get; set; }
+}
+
+Criar classes de ralcionamento manuelmente são uteis apenas quando queremos adicionar colunas a mais, caso contrário a abordagem se faz mais presente.
+

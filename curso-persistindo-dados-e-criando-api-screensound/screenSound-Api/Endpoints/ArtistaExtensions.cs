@@ -2,13 +2,15 @@
 using ScreenSound.Banco_com_Entity;
 using ScreenSound.Modelos;
 using screenSound_Api.Requests;
+using screenSound_Api.Response;
+
 
 namespace screenSound_Api.Endpoints;
 
 // As classes no namespace Endpoints são classes que extendem o program.cs, é uma boa prática de código para que ocorra o encapsulamento e a divisão de responsabilidades, assim cada Endpoint de uma tabela fica separado por classe.
 public static class ArtistaExtensions
 {
-    // Esse parametro indica q o método extende a classe program.cs usando a variável app....
+    // WebApplication é um parâmetro indica q o método extende a classe program.cs usando a variável app....
     public static void AddEndPointsArtista(this WebApplication app)
     {
         // [FromServices] indica que o arguemento para o parâmetro artistaDAL foi injetado de da Prop Services no builder.
@@ -18,18 +20,22 @@ public static class ArtistaExtensions
 
             if (artistas is null) return Results.NotFound();
 
-            // Retornando um objeto diretamento devido a problemas com LazyLoadingProxies
-            var result = artistas.Select(a => new
-            {
-                a.Id,
-                a.Nome,
-                a.Bio,
-                a.FotoPerfil,
-                a.Musicas
-            });
+            #region Corringindo problema com LazyLoading
+        // Retornando um objeto diretamento devido a problemas com LazyLoadingProxies
+        //var result = artistas.Select(a => new
+        //{
+        //    a.Id,
+        //    a.Nome,
+        //    a.Bio,
+        //    a.FotoPerfil,
+        //    a.Musicas
+        //});
 
-            // Criar um constructor vazio na classe Artista também resolveria pórem, o json sempre retorna um atributo vazio chama lazyLoader. 
-            return Results.Ok(result);
+        // Criar um constructor vazio na classe Artista também resolveria pórem, o json sempre retorna um atributo vazio chama lazyLoader. 
+        #endregion
+
+            var artistasAhRetornar = (EntityListToResponseList(artistas));
+            return Results.Ok(artistasAhRetornar);
         });
 
         app.MapGet("/Artistas/{nome}", ([FromServices] DAL<Artista> artistaDAL, string nome) =>
@@ -38,6 +44,7 @@ public static class ArtistaExtensions
 
             if (artista is null) return Results.NotFound();
 
+            #region Corringo problemas de LazyLoading
             //var result = new
             //{
             //    artista.Id,
@@ -50,14 +57,18 @@ public static class ArtistaExtensions
             //return Results.Ok(result);   
 
             // Optando por retornar direto e recebendo atributo vazio lazyLoader.
-            return Results.Ok(artista);
+            #endregion
+
+            // Como o response é modelado retornando um objeto que está na aplicação, o problema de LazyLoading já é resolvido.
+            var artistaAhRetornar = EntityToResponse(artista);
+            return Results.Ok(artistaAhRetornar);
         });
 
         // [FromBody] para indicar que esse parâmetro vem do corpo da requisição.
-        app.MapPost("/Artistas", ([FromServices] DAL<Artista> artistaDAL, [FromBody] ArtistaResquest artistaRequest) =>
+        app.MapPost("/Artistas", ([FromServices] DAL<Artista> artistaDAL, [FromBody] ArtistaRequest artistaRequest) =>
         {
             // Convertendo artista request para Artista
-            var artista = new Artista(artistaRequest.nome, artistaRequest.bio);
+            var artista = new Artista(artistaRequest.Nome, artistaRequest.Bio);
             artistaDAL.Adicionar(artista);
             return Results.Ok();
         });
@@ -71,20 +82,31 @@ public static class ArtistaExtensions
             return Results.NoContent();
         });
 
-        app.MapPut("/Artistas", ([FromServices] DAL<Artista> artistaDAL, [FromBody] ArtistaResquest artistaRequest) =>
+        app.MapPut("/Artistas", ([FromServices] DAL<Artista> artistaDAL, [FromBody] ArtistaRequestEdit artistaRequestEdit) =>
         {
-            // Convertendo artista request para Artista
-            var artista = new Artista(artistaRequest.nome, artistaRequest.bio);
-
-            var artistaAhAtualizar = artistaDAL.RecuperarPor(art => art.Id == artista.Id);
+            var artistaAhAtualizar = artistaDAL.RecuperarPor(art => art.Id == artistaRequestEdit.Id);
             if (artistaAhAtualizar is null) return Results.NotFound();
 
-            artistaAhAtualizar.Nome = artista.Nome;
-            artistaAhAtualizar.Bio = artista.Bio;
-            artistaAhAtualizar.FotoPerfil = artista.FotoPerfil;
-
+            artistaAhAtualizar.Nome = artistaRequestEdit.Nome;
+            if(artistaRequestEdit.Bio is null) artistaAhAtualizar.Bio = artistaAhAtualizar.Bio;
+            else artistaAhAtualizar.Bio = artistaRequestEdit.Bio;
+     
             artistaDAL.Atualizar(artistaAhAtualizar);
             return Results.Ok();
         });
+    }
+
+    // Método para modelar a response de uma lista de artistas
+    public static ICollection<ArtistaResponse> EntityListToResponseList(IEnumerable<Artista> listaDeArtistas)
+    {
+        // Recebe uma lista de artista e retorna um ArtistaResponse para cada artista da lista.
+        return listaDeArtistas.Select(a => EntityToResponse(a)).ToList();
+    }
+
+    // Método para modelar a response de um único objeto Artista
+    public static ArtistaResponse EntityToResponse(Artista artista)
+    {
+        // Recebe um artista e rotorna a resposta modelada com ArtistaResponse
+        return new ArtistaResponse(artista.Id, artista.Nome, artista.Bio, artista.FotoPerfil);
     }
 }

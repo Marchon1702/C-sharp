@@ -16,3 +16,10 @@ No caso acima temos valores criados dinamicamente que o usuário não tem a resp
 O ideal nesses casos é usar o conceito DTO, que modela o corpo da requisição para que o usuário insira somente oque é necessário.
 
 Em C# esse objeto modelado tem como estrutura o record, que são mais leves q as classes, e como ele são modelados de acordo com oquê a classe recebe faz todo sentido.
+
+Também temos o Response, que serve para modelarmos o retorno dos dados
+
+Ex: 
+	public record MusicaResponse(int Id, string Nome, int ArtistaId, string NomeArtista);
+
+Usando um record e criando método na classe Extensios podemos modelar o retorno das respostas.

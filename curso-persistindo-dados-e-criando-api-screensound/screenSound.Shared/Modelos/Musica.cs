@@ -14,6 +14,9 @@ public class Musica
 
     // Com proxies as classes que se relacionam deve ser virtuais
     public virtual Artista? Artista { get; set; }
+    // Uma Musica pode ter muitos generos 
+    public virtual ICollection<Genero> Generos { get; set; }
+
 
     public void ExibirFichaTecnica()
     {

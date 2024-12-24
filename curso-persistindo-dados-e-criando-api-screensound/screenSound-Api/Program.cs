@@ -4,6 +4,7 @@ using ScreenSound.Banco_com_Entity;
 using ScreenSound.Banco_Entity;
 using ScreenSound.Modelos;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 //Adicionando recursos do Swagger na API
@@ -14,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ScreenSoundContext>();
 builder.Services.AddTransient<DAL<Artista>>();
 builder.Services.AddTransient<DAL<Musica>>();
+builder.Services.AddTransient<DAL<Genero>>();
 
 // Configuração para que o ASPNETCore serialize os dados retornados do banco, essa configuração é feita para SYstem.Text.Json, ela apresentou conflito com o EF proxies.
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
@@ -23,6 +25,7 @@ var app = builder.Build();
 
 app.AddEndPointsArtista();
 app.AddEndPointsMusica();
+app.AddEndPointGeneros();
 
 
 // Declarando uso de Swagger quando a aplicação for executada...
