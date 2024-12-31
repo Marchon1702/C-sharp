@@ -3,6 +3,7 @@ using screenSound_Api.Endpoints;
 using ScreenSound.Banco_com_Entity;
 using ScreenSound.Banco_Entity;
 using ScreenSound.Modelos;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Adicionando contexto de EF e classe DAL para evitar repeição de instanciação no código.
-builder.Services.AddDbContext<ScreenSoundContext>();
+builder.Services.AddDbContext<ScreenSoundContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("ScreenSoundDB"))
+        .UseLazyLoadingProxies()
+);
+
+
+#region Adicionando AddContext sem configuração de ambiente de desenvolvimento
+// Ideal para criar APIS apenas para estudar...
+
+//builder.Services.AddDbContext<ScreenSoundContext>();
+#endregion
 builder.Services.AddTransient<DAL<Artista>>();
 builder.Services.AddTransient<DAL<Musica>>();
 builder.Services.AddTransient<DAL<Genero>>();

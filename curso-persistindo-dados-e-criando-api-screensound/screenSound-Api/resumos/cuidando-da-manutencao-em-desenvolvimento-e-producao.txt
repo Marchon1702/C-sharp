@@ -1,0 +1,160 @@
+﻿Quando temos uma aplicaçào rodando em nuvem é uma boa prática criarmos um controle de manutenção em nuvem e em desenvolvimento.
+
+Com o ASPNET isso é possivel através de alguns arquivos,
+
+appsettings.json e appsettings.Developments.json
+
+O "appsettings.json" cuida de arquivos relacionados ao ambiente de produção ou seja, arquivos que impactam diretamente a aplicação na nuvem, o Developments é usado para arquivos de desenvolviemento, ou seja, arquivos locais.
+
+Então valores como da connectionString usada para se conectar ao banco de dados serÃAO distintos em cada contexto, ma Development apontará para o endereço local, em produção deve apontar para o endereço em nuvem.
+
+Ex:
+
+Aplicando endereço em um contexto de desenvolvimento
+
+{
+  "Logging": {
+    "LogLevel": {
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Warning"
+    },
+    "connectionStrings": {
+        "ScreenSoundDB": "endereco-do-banco-localmente"
+    } 
+  }
+}
+
+Aplicando endereço em um contexto de produção arquivo "appsettings.json"
+
+{
+  "Logging": {
+    "LogLevel": {
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Warning"
+    },
+    "ConnectionStrings": {
+        "ScreenSoundDB": "endereço-do-servidor-que-hospeda-o-banco-de-dados-em-nuvem"
+    } 
+  }
+}
+
+Configurando isso contexto do EF Core ao iniciar a aplicação
+
+Configuração do DbContext:
+
+A classe ScreenSoundContext herda de DbContext
+O construtor recebe DbContextOptions<ScreenSoundContext> via injeção de dependência
+Removemos a configuração hardcoded da string de conexão do método OnConfiguring
+
+
+Configuração no Program.cs:
+
+Usamos builder.Services.AddDbContext para registrar o contexto
+A string de conexão é obtida via Configuration.GetConnectionString
+Habilitamos o LazyLoading através de .UseLazyLoadingProxies()
+
+
+Arquivos de Configuração:
+
+appsettings.Development.json: Contém configurações para desenvolvimento local
+appsettings.json: Contém configurações para produção
+O ASP.NET Core automaticamente escolhe o arquivo correto baseado no ambiente
+
+Boas Práticas:
+
+Nunca commit strings de conexão de produção no controle de versão
+Use secrets ou variáveis de ambiente para produção
+Mantenha as configurações de desenvolvimento apenas localmente
+Use sempre injeção de dependência para configurar o contexto
+
+
+
+Para alternar entre ambientes, você pode:
+
+Em desenvolvimento: set ASPNETCORE_ENVIRONMENT=Development
+Em produção: set ASPNETCORE_ENVIRONMENT=Production
+
+Você também pode configurar isso no Visual Studio ou no arquivo launchSettings.json.
+
+Cada parte do arquivo launchSettings.json:
+
+Localização do Arquivo:
+
+Fica na pasta Properties do seu projeto
+É usado apenas durante o desenvolvimento local
+Não é publicado com a aplicação
+
+
+Estrutura Principal:
+
+iisSettings: Configurações específicas para IIS Express
+profiles: Diferentes perfis de execução da aplicação
+
+
+Perfis Disponíveis:
+
+Cada perfil representa uma configuração diferente de execução
+No exemplo temos:
+
+Development: Ambiente de desenvolvimento
+Staging: Ambiente de homologação
+Production: Ambiente de produção
+IIS Express: Execução via IIS Express
+
+
+
+
+Configurações por Perfil:
+
+commandName: Tipo de servidor ("Project" para Kestrel, "IISExpress" para IIS)
+launchBrowser: Se deve abrir o navegador ao iniciar
+launchUrl: Página inicial ao abrir o navegador
+applicationUrl: URLs onde a aplicação vai rodar
+environmentVariables: Variáveis de ambiente específicas do perfil
+
+
+Variáveis de Ambiente Importantes:
+
+ASPNETCORE_ENVIRONMENT: Define o ambiente (Development, Staging, Production)
+ASPNETCORE_DETAILEDERRORS: Habilita erros detalhados
+ConnectionStrings__: Strings de conexão específicas por ambiente
+
+
+Como Usar no Visual Studio:
+
+Os perfis aparecem em um dropdown na barra de ferramentas
+Você pode alternar entre eles facilmente
+O Visual Studio usa estas configurações ao depurar
+
+
+Boas Práticas:
+
+Mantenha senhas e dados sensíveis fora do launchSettings.json
+Use diferentes portas para cada ambiente
+Configure o Swagger apenas em desenvolvimento
+Use HTTPS em todos os ambientes (observe as URLs com https)
+
+
+Selecionando Perfis:
+No Visual Studio:
+
+Use o dropdown na barra de ferramentas
+Clique direito no projeto > Propriedades > Debug
+
+Via linha de comando:
+bashCopydotnet run --launch-profile "Development"
+dotnet run --launch-profile "Production"
+
+Integração com appsettings.json:
+
+O launchSettings.json complementa o appsettings.json
+Variáveis de ambiente no launchSettings sobrescrevem as do appsettings
+Útil para configurações específicas de desenvolvimento
+
+Depuração:
+
+Cada perfil pode ter suas próprias configurações de depuração
+Útil para testar diferentes cenários
+Pode-se definir diferentes níveis de log por perfil
+
+Lembre-se que o launchSettings.json é uma ferramenta de desenvolvimento - em produção, você deve configurar suas variáveis de ambiente no servidor de hospedagem ou em um serviço de configuração na nuvem.

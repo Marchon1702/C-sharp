@@ -1,0 +1,17 @@
+﻿@page "/logout"
+@inject AuthAPI AuthAPI
+@attribute [AllowAnonymous]
+
+<!--Esse componente é responsável por "quando entrarem na rota /logout, o método verifica se existe um usuario 
+autenticado e deslogado ele"-->
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Quando o componente é motando, esse método é executado verificando se tem algum usuário autenticado.
+        if (await AuthAPI.VerificaAutenticado()) 
+        {
+            await AuthAPI.LogoutAsync();
+        }           
+        await base.OnInitializedAsync();
+    }
+}

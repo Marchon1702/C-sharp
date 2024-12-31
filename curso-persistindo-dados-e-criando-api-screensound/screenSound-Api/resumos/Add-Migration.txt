@@ -1,0 +1,3 @@
+﻿Cuidados ao adicionar uma migração com C# e VisualStudio
+
+Ao adicionar uma nova migração observe se o projeto de inicialização é o mesmo que contém os arquivos do seu DBContext, e as referencias desses arquivos ao modelos estÃo sendo feitas corretamente, no console do gerenciador de pacotes também certifique-se que o projeto padrão esteja marcado com o mesmo que contenha seus arquivos do banco (DbContext)
