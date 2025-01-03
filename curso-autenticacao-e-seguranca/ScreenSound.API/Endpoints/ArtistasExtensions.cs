@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using ScreenSound.API.Requests;
 using ScreenSound.API.Response;
 using ScreenSound.Banco;
+using ScreenSound.Migrations;
 using ScreenSound.Modelos;
+using ScreenSound.Shared.Dados.Modelos;
 
 namespace ScreenSound.API.Endpoints;
 
@@ -95,6 +98,62 @@ public static class ArtistasExtensions
             dal.Atualizar(artistaAAtualizar);
             return Results.Ok();
         });
+
+        groupBuilder.MapPost("avaliacoes",
+            (
+                HttpContext context,
+                [FromBody] AvaliacaoArtistaRequest request,
+                [FromServices] DAL<Artista> artistaDAL,
+                [FromServices] DAL<PessoaComAcesso> pessoaDAL
+            ) =>
+        {
+            var artista = artistaDAL.RecuperarPor(a => a.Id == request.ArtistaId);
+            if(artista is null) return Results.NotFound();
+
+            var email = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value ?? throw new InvalidOperationException("Pessoa não encontrada");
+
+            var pessoa = pessoaDAL.RecuperarPor(p => p.Email.Equals(email)) ?? throw new InvalidOperationException("Pessoa não encontrada");
+
+            // verificando se pessoa já avaliou o artista
+            var avaliacao = artista.Avaliacoes.FirstOrDefault(a => a.ArtistaId == artista.Id && a.PessoaId == pessoa.Id);
+
+            // Se a pessoa nunca avaliou o artista antes adicione uma nova avaliacao
+            if (avaliacao is null)
+            {
+                artista.AdicionarAvaliacao(pessoa.Id, request.Nota);
+            } 
+            // Se a pessoa já avaliou, só atualiza a nota e mantém o Id da pessoa com a ArtistaId
+            else
+            {
+                avaliacao.Nota = request.Nota;
+            }
+            
+            artistaDAL.Atualizar(artista);
+            return Results.Created();
+        });
+
+        groupBuilder.MapGet("{id}/avaliacoes", 
+            (
+                int id,
+                HttpContext context,
+                [FromServices] DAL<Artista> artistaDAL,
+                [FromServices] DAL<PessoaComAcesso> pessoaDAL
+            ) =>
+        {
+            var artista = artistaDAL.RecuperarPor(a => a.Id == id);
+            if(artista is null) return Results.NotFound();
+
+            // email recebe o email relacionado com o cookie do navegador 
+            var email = context.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value ?? throw new InvalidOperationException("Não foi encontrado email da pessoa logada!");
+
+            // pessoa recupera o usuario logado no banco de dados comparando o email relacionado ao cookie do navegador com o email do usuário do banco
+            var pessoa = pessoaDAL.RecuperarPor(p => p.Email.Equals(email)) ?? throw new InvalidOperationException("Não foi encontrado email da pessoa logada!");
+
+            var avaliacao = artista.Avaliacoes.FirstOrDefault(a => a.ArtistaId == id && a.PessoaId == pessoa.Id);
+
+            if (avaliacao is null) return Results.Ok(new AvaliacaoArtistaResponse(id, 0));
+            else return Results.Ok(new AvaliacaoArtistaResponse(id, avaliacao.Nota));
+        });
         #endregion
     }
 
@@ -105,8 +164,13 @@ public static class ArtistasExtensions
 
     private static ArtistaResponse EntityToResponse(Artista artista)
     {
-        return new ArtistaResponse(artista.Id, artista.Nome, artista.Bio, artista.FotoPerfil);
+        return new ArtistaResponse(artista.Id, artista.Nome, artista.Bio, artista.FotoPerfil)
+        {
+            Classificacao = artista
+            .Avaliacoes
+            .Select(a => a.Nota)
+            .DefaultIfEmpty(0)
+            .Average()
+        };
     }
-
-  
 }

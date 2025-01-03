@@ -1,4 +1,6 @@
-﻿namespace ScreenSound.Modelos; 
+﻿using ScreenSound.Shared.Modelos;
+
+namespace ScreenSound.Modelos; 
 
 public class Artista 
 {
@@ -18,10 +20,17 @@ public class Artista
     public string FotoPerfil { get; set; } = string.Empty;
     public string Bio { get; set; }
     public int Id { get; set; }
+    public virtual ICollection<AvaliacaoArtista> Avaliacoes { get; set; }
 
     public void AdicionarMusica(Musica musica)
     {
         Musicas.Add(musica);
+    }
+
+    public void AdicionarAvaliacao(int pessoaId, int nota)
+    { 
+        nota = Math.Min(Math.Max(nota, 1), 5);
+        Avaliacoes.Add(new AvaliacaoArtista() { ArtistaId = this.Id, PessoaId = pessoaId, Nota = nota});
     }
 
     public void ExibirDiscografia()

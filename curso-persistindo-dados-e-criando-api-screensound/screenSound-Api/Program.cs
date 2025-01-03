@@ -5,20 +5,18 @@ using ScreenSound.Banco_Entity;
 using ScreenSound.Modelos;
 using Microsoft.EntityFrameworkCore;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 //Adicionando recursos do Swagger na API
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Adicionando contexto de EF e classe DAL para evitar repeição de instanciação no código.
+// Adicionando contexto de EF e classe DAL para evitar repetição de instanciação no código.
 builder.Services.AddDbContext<ScreenSoundContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("ScreenSoundDB"))
         .UseLazyLoadingProxies()
 );
-
 
 #region Adicionando AddContext sem configuração de ambiente de desenvolvimento
 // Ideal para criar APIS apenas para estudar...

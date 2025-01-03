@@ -4,9 +4,9 @@ Com o ASPNET isso é possivel através de alguns arquivos,
 
 appsettings.json e appsettings.Developments.json
 
-O "appsettings.json" cuida de arquivos relacionados ao ambiente de produção ou seja, arquivos que impactam diretamente a aplicação na nuvem, o Developments é usado para arquivos de desenvolviemento, ou seja, arquivos locais.
+O "appsettings.json" cuida de arquivos relacionados ao ambiente de produção ou seja, arquivos que impactam diretamente a aplicação na nuvem, o Developments é usado para arquivos de desenvolvimento, ou seja, arquivos locais.
 
-Então valores como da connectionString usada para se conectar ao banco de dados serÃAO distintos em cada contexto, ma Development apontará para o endereço local, em produção deve apontar para o endereço em nuvem.
+Então valores como da connectionString usada para se conectar ao banco de dados serão distintos em cada contexto, na Development apontará para o endereço local, em produção deve apontar para o endereço em nuvem.
 
 Ex:
 
