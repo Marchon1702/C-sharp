@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyTasks.Shared.Dados.Banco;
 
@@ -11,9 +12,11 @@ using MyTasks.Shared.Dados.Banco;
 namespace MyTasks.Shared.Dados.Migrations
 {
     [DbContext(typeof(MyTasksContext))]
-    partial class MyTasksContextModelSnapshot : ModelSnapshot
+    [Migration("20250104234925_ReformulandoBanco")]
+    partial class ReformulandoBanco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,9 +179,35 @@ namespace MyTasks.Shared.Dados.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("Nome")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Prioridade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Tarefas");
+                });
+
+            modelBuilder.Entity("MyTasks.Shared.Dados.Modelos.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomeCompleto")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UsuarioAutenticadoId")
@@ -186,9 +215,10 @@ namespace MyTasks.Shared.Dados.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioAutenticadoId");
+                    b.HasIndex("UsuarioAutenticadoId")
+                        .IsUnique();
 
-                    b.ToTable("Tarefas");
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("MyTasks.Shared.Dados.Modelos.UsuarioAutenticado", b =>
@@ -245,6 +275,9 @@ namespace MyTasks.Shared.Dados.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -312,18 +345,35 @@ namespace MyTasks.Shared.Dados.Migrations
 
             modelBuilder.Entity("MyTasks.Shared.Dados.Modelos.Tarefa", b =>
                 {
-                    b.HasOne("MyTasks.Shared.Dados.Modelos.UsuarioAutenticado", "UsuarioAutenticado")
+                    b.HasOne("MyTasks.Shared.Dados.Modelos.Usuario", "Usuario")
                         .WithMany("Tarefas")
-                        .HasForeignKey("UsuarioAutenticadoId")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("MyTasks.Shared.Dados.Modelos.Usuario", b =>
+                {
+                    b.HasOne("MyTasks.Shared.Dados.Modelos.UsuarioAutenticado", "UsuarioAutenticado")
+                        .WithOne("Usuario")
+                        .HasForeignKey("MyTasks.Shared.Dados.Modelos.Usuario", "UsuarioAutenticadoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("UsuarioAutenticado");
                 });
 
-            modelBuilder.Entity("MyTasks.Shared.Dados.Modelos.UsuarioAutenticado", b =>
+            modelBuilder.Entity("MyTasks.Shared.Dados.Modelos.Usuario", b =>
                 {
                     b.Navigation("Tarefas");
+                });
+
+            modelBuilder.Entity("MyTasks.Shared.Dados.Modelos.UsuarioAutenticado", b =>
+                {
+                    b.Navigation("Usuario")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

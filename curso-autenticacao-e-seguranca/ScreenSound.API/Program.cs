@@ -72,7 +72,6 @@ app.MapPost("auth/logout", async ([FromServices] SignInManager<PessoaComAcesso> 
     await signInManager.SignOutAsync();
 }).RequireAuthorization().WithTags("Authorization");
 
-
 app.UseSwagger();
 app.UseSwaggerUI();
 

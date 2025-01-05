@@ -1,15 +1,15 @@
-﻿namespace MyTasks.Shared.Modelos.Modelos;
+﻿namespace MyTasks.Shared.Dados.Modelos;
 
 public class Tarefa
 {
     public int Id { get; set; }
-    public string Nome { get; set; }
-    public string Prioridade { get; set; }
+    public string? Nome { get; set; }
+    public string? Prioridade { get; set; }
     public DateOnly DataInicio { get; set; }
     public DateOnly DataFim { get; set; }
     public bool Concluida { get; set; } = false;
-    public int UsuarioId { get; set; }
-    public UsuarioAutenticado? Usuario { get; set; }
+    public int UsuarioAutenticadoId { get; set; }
+    public virtual UsuarioAutenticado? UsuarioAutenticado { get; set; }
 
     public void ValidaDatas(DateOnly dataInicio, DateOnly dataFim)
     {

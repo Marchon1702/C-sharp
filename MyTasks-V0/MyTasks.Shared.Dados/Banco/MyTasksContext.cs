@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyTasks.Shared.Modelos.Modelos;
+﻿using System.Reflection.Emit;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using MyTasks.Shared.Dados.Modelos;
 
 namespace MyTasks.Shared.Dados.Banco;
 
-public class MyTasksContext : DbContext
+public class MyTasksContext : IdentityDbContext<UsuarioAutenticado, PerfilDeAutenticacao, int>
 {
     public DbSet<Tarefa> Tarefas { get; set; }
 
@@ -21,5 +23,15 @@ public class MyTasksContext : DbContext
         optionsBuilder
             .UseSqlServer(_connectionString)
             .UseLazyLoadingProxies();
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<Tarefa>()
+            .HasOne(t => t.UsuarioAutenticado)
+            .WithMany(u => u.Tarefas)
+            .HasForeignKey(t => t.UsuarioAutenticadoId);
     }
 }
